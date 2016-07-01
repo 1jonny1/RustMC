@@ -107,7 +107,6 @@ public class IconMenu implements Listener
     {
     	if(e.getInventory().getTitle().equals(name))
     	{
-    		saveInventory.getInventory().setContents(e.getInventory().getContents());
     		saveInventory.getBlockInventory().setContents(e.getInventory().getContents());
     		((Player)e.getPlayer()).playSound(((Player)e.getPlayer()).getLocation(), Sound.LEVEL_UP, 1, 15);
     		furnaceInstance.activate();
@@ -119,6 +118,8 @@ public class IconMenu implements Listener
     {
         if (event.getInventory().getTitle().equals(name))
         {
+    		saveInventory.getBlockInventory().setContents(event.getInventory().getContents());
+    		furnaceInstance.activate();
             int slot = event.getRawSlot();
             if (slot >= 0 && slot < size && optionNames[slot] != null)
             {

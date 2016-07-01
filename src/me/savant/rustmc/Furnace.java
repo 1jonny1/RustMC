@@ -48,7 +48,8 @@ public class Furnace implements Listener
 				{
 					public void onOptionClick(OptionClickEvent event) 
 					{
-						
+						event.setWillClose(false);
+						event.setWillDestroy(false);
 					}
 				 }, plugin, chest, furnaceInstance)
 				 .setContents(chest.getInventory().getContents());
@@ -58,7 +59,6 @@ public class Furnace implements Listener
 			}
 			else
 			{
-				p.sendMessage(getCardinalDirection(p).toString() + " " + chestBlock.getType().toString());
 				ActionBarAPI.sendActionBar(p, ChatColor.RED + "" + ChatColor.BOLD + "Open the Furnace Menu by Right Clicking Straight On", 120);
 			}
 		}

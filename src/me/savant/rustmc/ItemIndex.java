@@ -22,7 +22,22 @@ public class ItemIndex
 		return null;
 	}
 	
-	public static Material getItem(ItemType type)
+	public static boolean isRefinable(ItemType type)
+	{
+		switch (type)
+		{
+			case SULFUR_ORE:
+				return true;
+			case METAL_ORE:
+				return true;
+			case HIGH_QUALITY_METAL_ORE:
+				return true;
+			default:
+				return false;
+		}
+	}
+	
+	public static Material getType(ItemType type)
 	{
 		if(type == ItemType.SULFUR_ORE)
 			return Material.GOLD_ORE;
@@ -41,6 +56,31 @@ public class ItemIndex
 		if(type == ItemType.STONE)
 			return Material.COBBLESTONE;
 		return null;
+	}
+	
+	public static ItemType getType(Material material)
+	{
+		switch(material)
+		{
+			case COBBLESTONE:
+				return ItemType.STONE;
+			case LOG:
+				return ItemType.WOOD;
+			case GOLD_ORE:
+				return ItemType.SULFUR_ORE;
+			case GOLD_INGOT:
+				return ItemType.SULFUR;
+			case IRON_ORE:
+				return ItemType.METAL_ORE;
+			case IRON_INGOT:
+				return ItemType.METAL;
+			case DIAMOND_ORE:
+				return ItemType.HIGH_QUALITY_METAL_ORE;
+			case DIAMOND:
+				return ItemType.HIGH_QUALITY_METAL;
+			default:
+				return null;
+		}
 	}
 	
 	public static void removeItem(Material type, int amount, Inventory inventory)
@@ -103,7 +143,12 @@ public class ItemIndex
 		return null;
 	}
 	
-	public static void giveItem(ItemType type, Player p, int amount)
+	public static void addItem(ItemType type, int amount, Inventory inventory)
+	{
+		inventory.addItem(getItem(type, amount));
+	}
+	
+	public static ItemStack getItem(ItemType type, int amount)
 	{
 		if(type == ItemType.WOOD)
 		{
@@ -111,8 +156,7 @@ public class ItemIndex
 			ItemMeta meta = log.getItemMeta();
 			meta.setDisplayName(ChatColor.BLUE + "Wood");
 			log.setItemMeta(meta);
-			p.getInventory().addItem(log);
-			p.updateInventory();
+			return log;
 		}
 		if(type == ItemType.STONE)
 		{
@@ -120,8 +164,7 @@ public class ItemIndex
 			ItemMeta meta = stone.getItemMeta();
 			meta.setDisplayName(ChatColor.BLUE + "Stone");
 			stone.setItemMeta(meta);
-			p.getInventory().addItem(stone);
-			p.updateInventory();
+			return stone;
 		}
 		if(type == ItemType.SULFUR_ORE)
 		{
@@ -129,8 +172,7 @@ public class ItemIndex
 			ItemMeta meta = sulfur_ore.getItemMeta();
 			meta.setDisplayName(ChatColor.BLUE + "Sulfur Ore");
 			sulfur_ore.setItemMeta(meta);
-			p.getInventory().addItem(sulfur_ore);
-			p.updateInventory();
+			return sulfur_ore;
 		}
 		if(type == ItemType.METAL_ORE)
 		{
@@ -138,8 +180,7 @@ public class ItemIndex
 			ItemMeta meta = metal_ore.getItemMeta();
 			meta.setDisplayName(ChatColor.BLUE + "Metal Ore");
 			metal_ore.setItemMeta(meta);
-			p.getInventory().addItem(metal_ore);
-			p.updateInventory();
+			return metal_ore;
 		}
 		if(type == ItemType.HIGH_QUALITY_METAL_ORE)
 		{
@@ -147,8 +188,7 @@ public class ItemIndex
 			ItemMeta meta = high_quality_metal_ore.getItemMeta();
 			meta.setDisplayName(ChatColor.BLUE + "High Quality Metal Ore");
 			high_quality_metal_ore.setItemMeta(meta);
-			p.getInventory().addItem(high_quality_metal_ore);
-			p.updateInventory();
+			return high_quality_metal_ore;
 		}
 		if(type == ItemType.SULFUR)
 		{
@@ -156,8 +196,7 @@ public class ItemIndex
 			ItemMeta meta = sulfur.getItemMeta();
 			meta.setDisplayName(ChatColor.BLUE + "Sulfur");
 			sulfur.setItemMeta(meta);
-			p.getInventory().addItem(sulfur);
-			p.updateInventory();
+			return sulfur;
 		}
 		if(type == ItemType.METAL)
 		{
@@ -165,8 +204,7 @@ public class ItemIndex
 			ItemMeta meta = metal.getItemMeta();
 			meta.setDisplayName(ChatColor.BLUE + "Metal");
 			metal.setItemMeta(meta);
-			p.getInventory().addItem(metal);
-			p.updateInventory();
+			return metal;
 		}
 		if(type == ItemType.HIGH_QUALITY_METAL)
 		{
@@ -174,9 +212,15 @@ public class ItemIndex
 			ItemMeta meta = high_quality_metal.getItemMeta();
 			meta.setDisplayName(ChatColor.BLUE + "High Quality Metal");
 			high_quality_metal.setItemMeta(meta);
-			p.getInventory().addItem(high_quality_metal);
-			p.updateInventory();
+			return high_quality_metal;
 		}
+		return null;
+	}
+	
+	public static void giveItem(ItemType type, int amount, Player p)
+	{
+		p.getInventory().addItem(getItem(type, amount));
+		p.updateInventory();
 		p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 15);
 	}
 }

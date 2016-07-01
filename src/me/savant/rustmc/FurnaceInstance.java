@@ -3,6 +3,7 @@ package me.savant.rustmc;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
@@ -13,11 +14,13 @@ public class FurnaceInstance
 {
 	public static RustMC plugin;
 	
+	private final int WOOD_AMOUNT = 2;
+	private final int REFINE_AMOUNT = 2;
+	
 	Block block;
 	String uuid;
 	Player p;
 	int id;
-	
 	boolean status;
 	
 	public FurnaceInstance(Block block, String uuid, Player p)
@@ -28,20 +31,13 @@ public class FurnaceInstance
 		this.status = false;
 	}
 	
-	public void setUpdater(Player p)
+	private Inventory getInventory()
 	{
-		this.p = p;
+		if(p.getOpenInventory() != null && ChatColor.stripColor(p.getOpenInventory().getTitle()).equalsIgnoreCase("Furnace"))
+			return p.getOpenInventory().getTopInventory();
+		return ((Chest)block.getState()).getBlockInventory();
 	}
 	
-	public Block getBlock()
-	{
-		return block;
-	}
-	
-	public String getUUID()
-	{
-		return uuid;
-	}
 	
 	public void activate()
 	{
@@ -70,7 +66,22 @@ public class FurnaceInstance
 		}
 	}
 	
-	private final int WOOD_AMOUNT = 2;
+	
+	public void setUpdater(Player p)
+	{
+		this.p = p;
+	}
+	
+	public Block getBlock()
+	{
+		return block;
+	}
+	
+	public String getUUID()
+	{
+		return uuid;
+	}
+	
 	
 	private void schedule()
 	{
@@ -83,7 +94,10 @@ public class FurnaceInstance
 		{
 			public void run()
 			{
-				p.sendMessage(ChatColor.GRAY + "...");
+				for(Player p1 : Bukkit.getOnlinePlayers())
+				{
+					p1.playSound(block.getLocation(), Sound.ANVIL_USE, 1, 15);
+				}
 				if(p.getOpenInventory() != null && ChatColor.stripColor(p.getOpenInventory().getTitle()).equalsIgnoreCase("Furnace"))
 				{
 					((Chest)block.getState()).getBlockInventory().setContents(p.getOpenInventory().getTopInventory().getContents());
@@ -102,24 +116,44 @@ public class FurnaceInstance
 		}, 0L, 20L);
 	}
 	
-	void processOre()
-	{
-		
-	}
-	
-	private void removeWood(int amount)
-	{
-		ItemIndex.removeItem(ItemIndex.getItem(ItemType.WOOD), WOOD_AMOUNT, getInventory());
-	}
-	
 	private boolean containsWood(int amount)
 	{
-		int i = ItemIndex.getAmount(ItemIndex.getItem(ItemType.WOOD), getInventory());
+		int i = ItemIndex.getAmount(ItemIndex.getType(ItemType.WOOD), getInventory());
 		if(i >= amount)
 		{
 			return true;
 		}
 		return false;
+	}
+	
+	private void removeWood(int amount)
+	{
+		ItemIndex.removeItem(ItemIndex.getType(ItemType.WOOD), WOOD_AMOUNT, getInventory());
+	}
+	
+	void processOre()
+	{
+		int refined = 0;
+		for(ItemStack item : getInventory().getContents())
+		{
+			if(item != null && item.getType() != Material.AIR)
+			{
+				ItemType type;
+				if(item.hasItemMeta() && item.getItemMeta().hasDisplayName())
+					type = ItemIndex.parseItemType(item.getItemMeta().getDisplayName());
+				else
+					type = ItemIndex.getType(item.getType());
+				if(ItemIndex.isRefinable(type))
+				{
+					for(int x = 1; x < item.getAmount() && refined < REFINE_AMOUNT; x++, refined++)
+					{
+						ItemIndex.removeItem(ItemIndex.getType(type), 1, getInventory());
+						ItemIndex.addItem(ItemIndex.getRefined(type), 1, getInventory());
+					}
+					refined = 0;
+				}
+			}
+		}
 	}
 	
 	private void updateAction()
@@ -150,13 +184,6 @@ public class FurnaceInstance
 			f3.setBurnTime((short) 0);
 			f4.setBurnTime((short) 0);
 		}
-	}
-	
-	private Inventory getInventory()
-	{
-		if(p.getOpenInventory() != null && ChatColor.stripColor(p.getOpenInventory().getTitle()).equalsIgnoreCase("Furnace"))
-			return p.getOpenInventory().getTopInventory();
-		return ((Chest)block.getState()).getBlockInventory();
 	}
 	
 	static boolean canWork = true;

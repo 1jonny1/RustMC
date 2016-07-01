@@ -46,21 +46,21 @@ public class Break implements Listener
 					int amount = 15;
 					amount *= getPickBonus(p.getItemInHand());
 					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " Stone", 15);
-					ItemIndex.giveItem(ItemType.STONE, p, amount);
+					ItemIndex.giveItem(ItemType.STONE, amount, p);
 				}
 				else if(chance(50))
 				{
 					int amount = 5;
 					amount *= getPickBonus(p.getItemInHand());
 					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " Metal Ore", 15);
-					ItemIndex.giveItem(ItemType.METAL_ORE, p, amount);
+					ItemIndex.giveItem(ItemType.METAL_ORE, amount, p);
 				}
 				else
 				{
 					int amount = 1;
 					amount *= getPickBonus(p.getItemInHand());
 					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " High Quality Metal Ore", 15);
-					ItemIndex.giveItem(ItemType.HIGH_QUALITY_METAL_ORE, p, amount);
+					ItemIndex.giveItem(ItemType.HIGH_QUALITY_METAL_ORE, amount, p);
 				}
 			}
 			else if(type == Material.GOLD_ORE)
@@ -70,21 +70,21 @@ public class Break implements Listener
 					int amount = 15;
 					amount *= getPickBonus(p.getItemInHand());
 					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " Stone", 15);
-					ItemIndex.giveItem(ItemType.STONE, p, amount);
+					ItemIndex.giveItem(ItemType.STONE, amount, p);
 				}
 				else if(chance(50))
 				{
 					int amount = 5;
 					amount *= getPickBonus(p.getItemInHand());
 					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " Sulfur Ore", 15);
-					ItemIndex.giveItem(ItemType.SULFUR_ORE, p, amount);
+					ItemIndex.giveItem(ItemType.SULFUR_ORE, amount, p);
 				}
 				else
 				{
 					int amount = 1;
 					amount *= getPickBonus(p.getItemInHand());
 					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " High Quality Metal Ore", 15);
-					ItemIndex.giveItem(ItemType.HIGH_QUALITY_METAL_ORE, p, amount);
+					ItemIndex.giveItem(ItemType.HIGH_QUALITY_METAL_ORE, amount, p);
 				}
 			}
 			else if(type == Material.DIAMOND_ORE)
@@ -94,21 +94,21 @@ public class Break implements Listener
 					int amount = 15;
 					amount *= getPickBonus(p.getItemInHand());
 					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " Stone", 15);
-					ItemIndex.giveItem(ItemType.STONE, p, amount);
+					ItemIndex.giveItem(ItemType.STONE, amount, p);
 				}
 				else if(chance(50))
 				{
 					int amount = 1;
 					amount *= getPickBonus(p.getItemInHand());
 					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " High Quality Metal Ore", 15);
-					ItemIndex.giveItem(ItemType.HIGH_QUALITY_METAL_ORE, p, amount);
+					ItemIndex.giveItem(ItemType.HIGH_QUALITY_METAL_ORE, amount, p);
 				}
 				else
 				{
 					int amount = 5;
 					amount *= getPickBonus(p.getItemInHand());
 					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " Metal Ore", 15);
-					ItemIndex.giveItem(ItemType.METAL_ORE, p, amount);
+					ItemIndex.giveItem(ItemType.METAL_ORE, amount, p);
 				}
 			}
 			e.setCancelled(true);
@@ -132,7 +132,7 @@ public class Break implements Listener
 			int amount = 15;
 			amount *= getAxeBonus(p.getItemInHand());
 			ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " Wood", 15);
-			ItemIndex.giveItem(ItemType.WOOD, p, amount);
+			ItemIndex.giveItem(ItemType.WOOD, amount, p);
 			e.setCancelled(true);
 		}
 	}
