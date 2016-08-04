@@ -2,6 +2,8 @@ package me.savant.rustmc;
 
 import java.util.Random;
 
+import me.savant.items.ItemIndex;
+import me.savant.items.ItemType;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Location;
@@ -13,9 +15,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.connorlinfoot.actionbarapi.ActionBarAPI;
 
 public class Break implements Listener
 {
@@ -30,9 +32,22 @@ public class Break implements Listener
 	public void onBreak(BlockBreakEvent e)
 	{
 		Material type = e.getBlock().getType();
+		if(type != Material.IRON_ORE && type != Material.GOLD_ORE && type != Material.DIAMOND_ORE && type != Material.LOG && type != Material.LEAVES && !e.getPlayer().isOp())
+		{
+			e.setCancelled(true);
+			return;
+		}
+		
 		if(type == Material.IRON_ORE || type == Material.GOLD_ORE || type == Material.DIAMOND_ORE)
 		{
 			Player p = e.getPlayer();
+			if(p.getItemInHand().getDurability() > p.getItemInHand().getType().getMaxDurability())
+			{
+				p.playSound(p.getLocation(), Sound.ITEM_BREAK, 5, 15);
+				e.setCancelled(true);
+				p.updateInventory();
+				return;
+			}
 			if(chance(12.5f))
 			{
 				e.getBlock().setType(Material.AIR);
@@ -45,21 +60,18 @@ public class Break implements Listener
 				{
 					int amount = 15;
 					amount *= getPickBonus(p.getItemInHand());
-					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " Stone", 15);
 					ItemIndex.giveItem(ItemType.STONE, amount, p);
 				}
 				else if(chance(50))
 				{
 					int amount = 5;
 					amount *= getPickBonus(p.getItemInHand());
-					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " Metal Ore", 15);
 					ItemIndex.giveItem(ItemType.METAL_ORE, amount, p);
 				}
 				else
 				{
 					int amount = 1;
 					amount *= getPickBonus(p.getItemInHand());
-					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " High Quality Metal Ore", 15);
 					ItemIndex.giveItem(ItemType.HIGH_QUALITY_METAL_ORE, amount, p);
 				}
 			}
@@ -69,21 +81,18 @@ public class Break implements Listener
 				{
 					int amount = 15;
 					amount *= getPickBonus(p.getItemInHand());
-					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " Stone", 15);
 					ItemIndex.giveItem(ItemType.STONE, amount, p);
 				}
 				else if(chance(50))
 				{
 					int amount = 5;
 					amount *= getPickBonus(p.getItemInHand());
-					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " Sulfur Ore", 15);
 					ItemIndex.giveItem(ItemType.SULFUR_ORE, amount, p);
 				}
 				else
 				{
 					int amount = 1;
 					amount *= getPickBonus(p.getItemInHand());
-					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " High Quality Metal Ore", 15);
 					ItemIndex.giveItem(ItemType.HIGH_QUALITY_METAL_ORE, amount, p);
 				}
 			}
@@ -93,24 +102,22 @@ public class Break implements Listener
 				{
 					int amount = 15;
 					amount *= getPickBonus(p.getItemInHand());
-					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " Stone", 15);
 					ItemIndex.giveItem(ItemType.STONE, amount, p);
 				}
 				else if(chance(50))
 				{
 					int amount = 1;
 					amount *= getPickBonus(p.getItemInHand());
-					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " High Quality Metal Ore", 15);
 					ItemIndex.giveItem(ItemType.HIGH_QUALITY_METAL_ORE, amount, p);
 				}
 				else
 				{
 					int amount = 5;
 					amount *= getPickBonus(p.getItemInHand());
-					ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " Metal Ore", 15);
 					ItemIndex.giveItem(ItemType.METAL_ORE, amount, p);
 				}
 			}
+			p.getItemInHand().setDurability((short) (p.getItemInHand().getDurability() + 5));
 			e.setCancelled(true);
 		}
 		
@@ -126,15 +133,21 @@ public class Break implements Listener
 					y = y1;
 				}
 				breakTree(e.getBlock());
-				new Location(loc.getWorld(), loc.getX(), y - 1, loc.getZ()).getBlock().setType(Material.GRASS);
 				p.playSound(p.getLocation(), Sound.ITEM_BREAK, 1, 15);
 			}
 			int amount = 15;
 			amount *= getAxeBonus(p.getItemInHand());
-			ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " Wood", 15);
 			ItemIndex.giveItem(ItemType.WOOD, amount, p);
+			p.getItemInHand().setDurability((short) (p.getItemInHand().getDurability() + 5));
 			e.setCancelled(true);
 		}
+	}
+	
+	@EventHandler
+	public void onPlace(BlockPlaceEvent e)
+	{
+		if(!e.getPlayer().isOp())
+			e.setCancelled(true);
 	}
 	
 	public void breakTree(Block tree)

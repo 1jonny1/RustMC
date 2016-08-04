@@ -1,6 +1,0 @@
-package me.savant.rustmc;
-
-public enum ItemType
-{
-	WOOD, STONE, SULFUR_ORE, METAL_ORE, HIGH_QUALITY_METAL_ORE, SULFUR, METAL, HIGH_QUALITY_METAL
-}

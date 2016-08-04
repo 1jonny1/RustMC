@@ -4,3 +4,4 @@ description: Created by _Savant (savant.eclipse)
 main: me.savant.rustmc.RustMC
 commands:
   about:
+  rspawn:

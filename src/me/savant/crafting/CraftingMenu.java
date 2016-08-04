@@ -1,25 +1,23 @@
-package me.savant.rustmc;
+package me.savant.crafting;
 
 import java.util.Arrays;
 import java.util.List;
 
+import me.savant.rustmc.RustMC;
+
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
-public class IconMenu implements Listener
+public class CraftingMenu implements Listener
 {
 	private String name;
     private int size;
@@ -29,10 +27,7 @@ public class IconMenu implements Listener
     private String[] optionNames;
     private ItemStack[] optionIcons;
    
-    private Chest saveInventory;
-    private FurnaceInstance furnaceInstance;
-    
-    public IconMenu(String name, int size, OptionClickEventHandler handler, RustMC plugin, Chest saveInventory, FurnaceInstance furnaceInstance)
+    public CraftingMenu(String name, int size, OptionClickEventHandler handler, RustMC plugin)
     {
         this.name = name;
         this.size = size;
@@ -40,44 +35,19 @@ public class IconMenu implements Listener
         this.plugin = plugin;
         this.optionNames = new String[size];
         this.optionIcons = new ItemStack[size];
-        this.saveInventory = saveInventory;
-        this.furnaceInstance = furnaceInstance;
         plugin.registerEvents(this);
     }
-    
-    public IconMenu setContents(ItemStack[] contents)
-    {
-    	optionIcons = new ItemStack[size];
-    	optionNames = new String[size];
-    	int i = 0;
-    	for(ItemStack item : contents)
-    	{
-    		if(item == null)
-    			item = new ItemStack(Material.AIR, 1);
-    		setOption(i, item);
-    		i++;
-    	}
-    	return this;
-    }
    
-    public IconMenu setOption(int position, ItemStack icon, String name, String... info)
-    {
+    public CraftingMenu setOption(int position, ItemStack icon, String name, String... info) {
         optionNames[position] = name;
         optionIcons[position] = setItemNameAndLore(icon, name, Arrays.asList(info));
         return this;
     }
     
-    public IconMenu setOption(int position, ItemStack icon)
+    public CraftingMenu setOption(int position, ItemStack icon)
     {
-    	if(icon.getType() != Material.AIR)
-    	{
-    		optionNames[position] = icon.getItemMeta().getDisplayName();
-    		optionIcons[position] = setItemNameAndLore(icon, icon.getItemMeta().getDisplayName(), icon.getItemMeta().getLore());
-    	}
-    	else
-    	{
-    		optionIcons[position] = icon;
-    	}
+        optionNames[position] = icon.getItemMeta().getDisplayName();
+        optionIcons[position] = setItemNameAndLore(icon, icon.getItemMeta().getDisplayName(), icon.getItemMeta().getLore());
         return this;
     }
    
@@ -86,7 +56,8 @@ public class IconMenu implements Listener
         Inventory inventory = Bukkit.createInventory(player, size, name);
         for (int i = 0; i < optionIcons.length; i++)
         {
-            if (optionIcons[i] != null) {
+            if (optionIcons[i] != null)
+            {
                 inventory.setItem(i, optionIcons[i]);
             }
         }
@@ -102,24 +73,12 @@ public class IconMenu implements Listener
         optionIcons = null;
     }
    
-    @EventHandler
-    void onInventoryClose(InventoryCloseEvent e)
-    {
-    	if(e.getInventory().getTitle().equals(name))
-    	{
-    		saveInventory.getBlockInventory().setContents(e.getInventory().getContents());
-    		((Player)e.getPlayer()).playSound(((Player)e.getPlayer()).getLocation(), Sound.LEVEL_UP, 1, 15);
-    		furnaceInstance.activate();
-    	}
-    }
-    
     @EventHandler(priority=EventPriority.MONITOR)
     void onInventoryClick(InventoryClickEvent event)
     {
         if (event.getInventory().getTitle().equals(name))
         {
-    		saveInventory.getBlockInventory().setContents(event.getInventory().getContents());
-    		furnaceInstance.activate();
+            event.setCancelled(true);
             int slot = event.getRawSlot();
             if (slot >= 0 && slot < size && optionNames[slot] != null)
             {

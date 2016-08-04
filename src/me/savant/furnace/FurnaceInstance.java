@@ -1,9 +1,13 @@
-package me.savant.rustmc;
+package me.savant.furnace;
+
+import me.savant.fire.Fire;
+import me.savant.items.ItemIndex;
+import me.savant.items.ItemType;
+import me.savant.rustmc.RustMC;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
@@ -16,12 +20,14 @@ public class FurnaceInstance
 	
 	private final int WOOD_AMOUNT = 2;
 	private final int REFINE_AMOUNT = 2;
+	private final long REFINE_TIME = 40L;
 	
 	Block block;
 	String uuid;
 	Player p;
 	int id;
 	boolean status;
+	Fire fire;
 	
 	public FurnaceInstance(Block block, String uuid, Player p)
 	{
@@ -29,12 +35,15 @@ public class FurnaceInstance
 		this.uuid = uuid;
 		this.p = p;
 		this.status = false;
+		fire = new Fire(block.getLocation());
 	}
 	
 	private Inventory getInventory()
 	{
 		if(p.getOpenInventory() != null && ChatColor.stripColor(p.getOpenInventory().getTitle()).equalsIgnoreCase("Furnace"))
 			return p.getOpenInventory().getTopInventory();
+		if(!(block.getState() instanceof Chest))
+			deactivate();
 		return ((Chest)block.getState()).getBlockInventory();
 	}
 	
@@ -85,35 +94,34 @@ public class FurnaceInstance
 	
 	private void schedule()
 	{
-		if(Bukkit.getScheduler().isCurrentlyRunning(id))
+		if(Bukkit.getScheduler().isCurrentlyRunning(id) || status)
 		{
-			Bukkit.getScheduler().cancelTask(id);
+			deactivate();
 			System.out.println("Task did not cancel, attempted to create another one.");
 		}
 		id = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
 		{
 			public void run()
 			{
-				for(Player p1 : Bukkit.getOnlinePlayers())
-				{
-					p1.playSound(block.getLocation(), Sound.ANVIL_USE, 1, 15);
-				}
 				if(p.getOpenInventory() != null && ChatColor.stripColor(p.getOpenInventory().getTitle()).equalsIgnoreCase("Furnace"))
 				{
 					((Chest)block.getState()).getBlockInventory().setContents(p.getOpenInventory().getTopInventory().getContents());
 				}
+				
 				if(containsWood(WOOD_AMOUNT))
 				{
+					fire.start();
 					removeWood(WOOD_AMOUNT);
 				}
 				else
 				{
+					fire.stop();
 					deactivate();
 				}
 				processOre();
 			}
 			
-		}, 0L, 20L);
+		}, 0L, REFINE_TIME);
 	}
 	
 	private boolean containsWood(int amount)
@@ -145,7 +153,7 @@ public class FurnaceInstance
 					type = ItemIndex.getType(item.getType());
 				if(ItemIndex.isRefinable(type))
 				{
-					for(int x = 1; x < item.getAmount() && refined < REFINE_AMOUNT; x++, refined++)
+					for(int x = 0; x < item.getAmount() && refined < REFINE_AMOUNT; x++, refined++)
 					{
 						ItemIndex.removeItem(ItemIndex.getType(type), 1, getInventory());
 						ItemIndex.addItem(ItemIndex.getRefined(type), 1, getInventory());

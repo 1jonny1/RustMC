@@ -1,9 +1,10 @@
-package me.savant.rustmc;
+package me.savant.furnace;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-import me.savant.rustmc.IconMenu.OptionClickEvent;
+import me.savant.furnace.FurnaceMenu.OptionClickEvent;
+import me.savant.rustmc.RustMC;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;
@@ -44,7 +45,7 @@ public class Furnace implements Listener
 				FurnaceInstance furnaceInstance = getInstance(chestBlock, uuid, p);
 				
 				final Chest chest = (Chest)chestBlock.getState();
-				IconMenu menu = new IconMenu(ChatColor.BOLD + "Furnace", 27, new IconMenu.OptionClickEventHandler()
+				FurnaceMenu menu = new FurnaceMenu(ChatColor.BOLD + "Furnace", 27, new FurnaceMenu.OptionClickEventHandler()
 				{
 					public void onOptionClick(OptionClickEvent event) 
 					{
@@ -82,7 +83,9 @@ public class Furnace implements Listener
 	private String getUUID(Block block)
 	{
 		if(block.getMetadata("furnace-uuid") == null || block.getMetadata("furnace-uuid").isEmpty())
+		{
 			block.setMetadata("furnace-uuid", new FixedMetadataValue(plugin, UUID.randomUUID().toString()));
+		}
 		return block.getMetadata("furnace-uuid").get(0).asString();
 	}
 	

@@ -10,8 +10,8 @@ import org.bukkit.World;
 
 public class MaterialGeneration
 {
-	private int size = 500;
-	private int level = 32;
+	public int size = 500;
+	public int level = 32;
 	
 	private World world;
 	
@@ -32,6 +32,8 @@ public class MaterialGeneration
 		
 		oreGeneration();
 		treeGeneration();
+		barrelGeneration();
+		hempGeneration();
 		
 		long endTime = System.currentTimeMillis();
 		return endTime - startTime;
@@ -72,7 +74,12 @@ public class MaterialGeneration
 			{
 				if(chance(0.085f))
 				{
-					new Location(world, x, level, z).getBlock().setType(randomOre());
+					Material mat = randomOre();
+					Location loc = new Location(world, x, level, z);
+					if(loc.getBlock().getType() == Material.AIR)
+					{
+						loc.getBlock().setType(mat);
+					}
 				}
 			}
 		}
@@ -88,7 +95,45 @@ public class MaterialGeneration
 				{
 					Location loc = new Location(world, x, level, z);
 					if(loc.getBlock().getType() == Material.AIR)
-						world.generateTree(new Location(world, x, level, z), TreeType.TREE);
+					{
+						world.generateTree(loc, TreeType.TREE);
+					}
+				}
+			}
+		}
+	}
+	
+	private void barrelGeneration()
+	{
+		for(int x = 0; x < size; x++)
+		{
+			for(int z = 0; z < size; z++)
+			{
+				if(chance(0.015f))
+				{
+					Location loc = new Location(world, x, level, z);
+					if(loc.getBlock().getType() == Material.AIR)
+					{
+						loc.getBlock().setType(Material.BOOKSHELF);
+					}
+				}
+			}
+		}
+	}
+	
+	private void hempGeneration()
+	{
+		for(int x = 0; x < size; x++)
+		{
+			for(int z = 0; z < size; z++)
+			{
+				if(chance(0.02f))
+				{
+					Location loc = new Location(world, x, level, z);
+					if(loc.getBlock().getType() == Material.AIR)
+					{
+						loc.getBlock().setTypeIdAndData(31, (byte) 2, true);
+					}
 				}
 			}
 		}

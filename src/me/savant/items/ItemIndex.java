@@ -1,4 +1,4 @@
-package me.savant.rustmc;
+package me.savant.items;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import com.connorlinfoot.actionbarapi.ActionBarAPI;
 
 public class ItemIndex
 {
@@ -55,6 +57,8 @@ public class ItemIndex
 			return Material.LOG;
 		if(type == ItemType.STONE)
 			return Material.COBBLESTONE;
+		if(type == ItemType.CLOTH)
+			return Material.STRING;
 		return null;
 	}
 	
@@ -78,6 +82,8 @@ public class ItemIndex
 				return ItemType.HIGH_QUALITY_METAL_ORE;
 			case DIAMOND:
 				return ItemType.HIGH_QUALITY_METAL;
+			case STRING:
+				return ItemType.CLOTH;
 			default:
 				return null;
 		}
@@ -113,7 +119,7 @@ public class ItemIndex
 		int i = 0;
 		for(ItemStack item : inventory.getContents())
 		{
-			if(item != null && item.getType() == Material.LOG)
+			if(item != null && item.getType() == type)
 			{
 				i += item.getAmount();
 			}
@@ -140,6 +146,8 @@ public class ItemIndex
 			return ItemType.METAL;
 		if(itemName.equalsIgnoreCase("High Quality Metal"))
 			return ItemType.HIGH_QUALITY_METAL;
+		if(itemName.equalsIgnoreCase("Cloth"))
+			return ItemType.CLOTH;
 		return null;
 	}
 	
@@ -214,7 +222,20 @@ public class ItemIndex
 			high_quality_metal.setItemMeta(meta);
 			return high_quality_metal;
 		}
+		if(type == ItemType.CLOTH)
+		{
+			ItemStack cloth = new ItemStack(Material.STRING, amount);
+			ItemMeta meta = cloth.getItemMeta();
+			meta.setDisplayName(ChatColor.BLUE + "Cloth");
+			cloth.setItemMeta(meta);
+			return cloth;
+		}
 		return null;
+	}
+	
+	public static String getName(ItemType type)
+	{
+		return ChatColor.stripColor(getItem(type, 1).getItemMeta().getDisplayName());
 	}
 	
 	public static void giveItem(ItemType type, int amount, Player p)
@@ -222,5 +243,6 @@ public class ItemIndex
 		p.getInventory().addItem(getItem(type, amount));
 		p.updateInventory();
 		p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 15);
+		ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " " + getName(type), 20);
 	}
 }
