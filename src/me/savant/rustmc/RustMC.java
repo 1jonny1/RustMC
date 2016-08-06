@@ -69,13 +69,6 @@ public class RustMC extends JavaPlugin implements Listener
 			
 			public void run()
 			{
-				for(Player p : Bukkit.getOnlinePlayers())
-				{
-					if(p.isOp() || p.hasPermission("admin") || p.hasPermission("staff"))
-					{
-						p.sendMessage(ChatColor.GRAY + "Starting Ore Regeneration");
-					}
-				}
 				matGen.update();
 			}
 			
@@ -109,20 +102,6 @@ public class RustMC extends JavaPlugin implements Listener
 			long duration = matGen.reset();
 			
 			p.sendMessage(ChatColor.GRAY + "Ended.. Took " + duration + "ms");
-			e.setCancelled(true);
-		}
-		if(message.equalsIgnoreCase("regen") || message.equalsIgnoreCase("regenerate"))
-		{
-			p.sendMessage(ChatColor.GRAY + "Starting Ore Regeneration");
-
-			matGen.update();
-			e.setCancelled(true);
-		}
-		if(message.equalsIgnoreCase("regen-terrain"))
-		{
-			p.sendMessage(ChatColor.GRAY + "Starting Terrain Regeneration");
-			
-			matGen.updateAll();
 			e.setCancelled(true);
 		}
 		if(message.equalsIgnoreCase("building"))
@@ -271,6 +250,32 @@ public class RustMC extends JavaPlugin implements Listener
 			p.sendMessage(ChatColor.GRAY + "OCTAVES: " + matGen.terrain.getOctaves());
 			p.sendMessage(ChatColor.GRAY + "AMPLITUDE: " + matGen.terrain.getAmplitude());
 			p.sendMessage(ChatColor.GRAY + "ROUGHNESS: " + matGen.terrain.getRoughness());
+		}
+		if(cmd.getName().equalsIgnoreCase("regen"))
+		{
+			Player p = (Player) sender;
+			if(p.isOp())
+			{
+				if(args.length == 0)
+				{
+					matGen.update();
+					return true;
+				}
+				else if(args.length == 1)
+				{
+					if(args[0].equalsIgnoreCase("full"))
+					{
+						matGen.updateAll();
+						return true;
+					}
+				}
+				p.sendMessage("/regen [full]");
+				return true;
+			}
+			else
+			{
+				p.sendMessage(ChatColor.RED + "Reported to Staff.");
+			}
 		}
 		return false;
 	}

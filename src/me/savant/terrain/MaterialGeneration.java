@@ -1,6 +1,12 @@
 package me.savant.terrain;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
+import me.savant.rustmc.Schematic;
+import me.savant.rustmc.Util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,10 +26,7 @@ public class MaterialGeneration
 	public Terrain terrain;
 	
 	private World world;
-	private long seed = 123456789L;
 	private Random r;
-	private long duration;
-	private int loading;
 	
 	public MaterialGeneration()
 	{
@@ -32,105 +35,65 @@ public class MaterialGeneration
 	
 	public void update()
 	{
+		Util.sendServerMessage("Starting automatic terrain refill! (You may experience lag)");
+		
 		final long startTime = System.currentTimeMillis();
 		
 		terrain = new Terrain();
 		r = new Random();
 		r.setSeed(terrain.getSeed());
 		
-		duration = 0L;
+		oreGeneration();
+		treeGeneration();
+		barrelGeneration();
+		hempGeneration();
+		cleanupEntities();		
 		
-		Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("RustMC"), new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				oreGeneration();
-				treeGeneration();
-				barrelGeneration();
-				hempGeneration();
-				cleanupEntities();
-				
-				//Ended
-				long endTime = System.currentTimeMillis();
-				duration = endTime - startTime;
-			}
-		});
-		loading = Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin("RustMC"), new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				for(Player p : Bukkit.getOnlinePlayers())
-				{
-					if(p.isOp() || p.hasPermission("admin") || p.hasPermission("staff"))
-					{
-						if(duration != 0)
-						{
-							p.sendMessage(ChatColor.GRAY + "Ended... Took " + duration + "ms");
-							Bukkit.getScheduler().cancelTask(loading);
-						}
-						else
-						{
-							p.sendMessage(ChatColor.GRAY + "Progressing...");
-						}
-					}
-				}
-			}
-		}, 0L, 60L);
+		long duration = System.currentTimeMillis() - startTime;
+		Util.sendStaffMessage("Automatic Terrain Refill finished... Took " + duration + "ms");
 	}
 	
 	public void updateAll()
 	{
-		final long startTime = System.currentTimeMillis();
-		
-		terrain = new Terrain();
-		r = new Random();
-		r.setSeed(terrain.getSeed());
-		
-		duration = 0L;
-		
-		//New Threading
 		Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("RustMC"), new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				terrainGeneration();
-				naturalize();
-				oreGeneration();
-				treeGeneration();
-				barrelGeneration();
-				hempGeneration();
-				grassalize();
+				Util.sendServerMessage("Full Terrain Reset in progress. You " + ChatColor.BOLD + "WILL" + ChatColor.RESET + "" + ChatColor.GOLD + " experience major lag.");
 				
-				//Ended
-				long endTime = System.currentTimeMillis();
-				duration = endTime - startTime;
+				final long startTime = System.currentTimeMillis();
+				
+				terrain = new Terrain();
+				r = new Random();
+				r.setSeed(terrain.getSeed());
+				
+				Util.sendServerMessage("0%");
+				reset();
+				Util.sendServerMessage("10%");
+				terrainGeneration();
+				Util.sendServerMessage("20%");
+				naturalize();
+				Util.sendServerMessage("30%");
+				oreGeneration();
+				Util.sendServerMessage("40%");
+				treeGeneration();
+				Util.sendServerMessage("50%");
+				barrelGeneration();
+				Util.sendServerMessage("60%");
+				hempGeneration();
+				Util.sendServerMessage("70%");
+				buildingGeneration();
+				Util.sendServerMessage("80%");
+				grassalize();
+				Util.sendServerMessage("90%");
+				cleanupEntities();
+				Util.sendServerMessage("100%");
+				
+				long duration = System.currentTimeMillis() - startTime;
+				Util.sendStaffMessage("Terrain Generation finished.. Took " + duration + "ms");
 			}
 		});
-		loading = Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin("RustMC"), new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				for(Player p : Bukkit.getOnlinePlayers())
-				{
-					if(p.isOp() || p.hasPermission("admin") || p.hasPermission("staff"))
-					{
-						if(duration != 0)
-						{
-							p.sendMessage(ChatColor.GRAY + "Ended... Took " + duration + "ms");
-							Bukkit.getScheduler().cancelTask(loading);
-						}
-						else
-						{
-							p.sendMessage(ChatColor.GRAY + "Progressing...");
-						}
-					}
-				}
-			}
-		}, 0L, 60L);
 	}
 	
 	public long reset()
@@ -141,7 +104,7 @@ public class MaterialGeneration
 		{
 			for(int z = 0; z < size; z++)
 			{
-				for(int y = level; y < 256; y++)
+				for(int y = 60; y > 1; y--)
 				{
 					new Location(world, x, y, z).getBlock().setType(Material.AIR);
 				}
@@ -167,6 +130,68 @@ public class MaterialGeneration
 		{
 			entity.remove();
 		}
+	}
+	
+	private void buildingGeneration()
+	{
+		int buildingAmount = 2;
+		List<Location> previousLocations = new ArrayList<Location>();
+		for(int i = 1; i <= buildingAmount; i++)
+		{
+			try
+			{
+				Schematic bld = Schematic.parseSchematic("building_" + i);
+				
+				Location loc = randomLocation();
+				int iteration = 0;
+				while(!canPlace(bld, loc, previousLocations))
+				{
+					loc = randomLocation();
+					System.out.println(loc.toVector().toString());
+					iteration++;
+					if(iteration > 30)
+					{
+						System.out.println("[RustMC] Cannot find suitable location for building_" + i);
+						return;
+					}
+				}
+				bld.pasteInstant(world, loc);
+				previousLocations.add(loc);
+			}
+			catch (IOException e)
+			{
+				System.out.println("[RustMC] Cannot find building_" + i);
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private boolean canPlace(Schematic schematic, Location loc, List<Location> previousLocations)
+	{
+		int distanceBetweenBuildings = size / 3;
+		if(schematic.canPlace(loc))
+		{
+			for(Location loc2 : previousLocations)
+			{
+				if(Math.abs(loc.distance(loc2)) < distanceBetweenBuildings)
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+		
+	private Location randomLocation()
+	{
+		int x = Util.range(1, 499);
+		int z = Util.range(1, 499);
+		int y = world.getHighestBlockYAt(x, z);
+		return new Location(world, x, y, z);
 	}
 	
 	private void terrainGeneration()

@@ -112,6 +112,68 @@ public class Schematic
 		return i == count;
 	}
 	
+	public void pasteInstant(final World world, Location loc1)
+	{
+		final Location loc = Center(loc1, length, width);
+		final int i = 2;
+		final short[] blocks = getBlocks();
+		final byte[] blockData = getData();
+
+		final short length = getLength();
+		final short width = getWidth();
+		short height = getHeight();
+		
+		for (int y = 0; y < height; y++)
+		{
+			final int fY = y;
+			for (int x = 0; x < width; x++) 
+			{
+				final int fX = x;
+				for (int z = 0; z < length; z++) 
+				{
+					final int fZ = z;
+					int index = fY * width * length + fZ * width + fX;
+					Block block = new Location(world, fX + loc.getX(), fY + loc.getY(), fZ + loc.getZ()).getBlock();
+					block.setTypeIdAndData(blocks[index], blockData[index], false);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * @return if can place at @param origin blacklisting terrain
+	 */
+	public boolean canPlace(Location origin)
+	{
+		origin = Center(origin, length, width);
+		for(int x = (int)origin.getX(); x < (int) origin.getX() + length; x++)
+		{
+			for(int y = (int)origin.getY(); y < (int) origin.getY() + height; y++)
+			{
+				for(int z = (int)origin.getZ(); z < (int) origin.getZ() + width; z++)
+				{
+					Material m = new Location(origin.getWorld(), x, y, z).getBlock().getType();
+					if(
+					   m != Material.AIR && 
+					   m != Material.GRASS &&
+					   m != Material.LEAVES &&
+					   m != Material.DIRT &&
+					   m != Material.STONE &&
+					   m != Material.IRON_ORE &&
+					   m != Material.GOLD_ORE &&
+					   m != Material.DIAMOND_ORE &&
+					   m != Material.getMaterial(31) && //Grass Leaves
+					   m != Material.getMaterial(175) &&
+					   m != Material.BOOKSHELF) //Flowers
+					{
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
 	/**
 	 * @return schematic parsed from @param string
 	 * @throws IOException
