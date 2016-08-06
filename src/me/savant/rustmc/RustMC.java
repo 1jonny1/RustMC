@@ -31,11 +31,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RustMC extends JavaPlugin implements Listener
-{
-	
-	//Is this here?
-	
-	
+{	
 	private String version = "1.6";
 	private MaterialGeneration matGen;
 	
