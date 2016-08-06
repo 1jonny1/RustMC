@@ -4,6 +4,7 @@ import me.savant.fire.Fire;
 import me.savant.items.ItemIndex;
 import me.savant.items.ItemType;
 import me.savant.rustmc.RustMC;
+import me.savant.rustmc.Util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -50,7 +51,7 @@ public class FurnaceInstance
 	
 	public void activate()
 	{
-		if(work())
+		if(Util.work())
 		{
 			if(!status)
 			{
@@ -67,7 +68,7 @@ public class FurnaceInstance
 	
 	public void deactivate()
 	{
-		if(work())
+		if(Util.work())
 		{
 			Bukkit.getScheduler().cancelTask(id);
 			status = false;
@@ -191,28 +192,6 @@ public class FurnaceInstance
 			f2.setBurnTime((short) 0);
 			f3.setBurnTime((short) 0);
 			f4.setBurnTime((short) 0);
-		}
-	}
-	
-	static boolean canWork = true;
-	public static boolean work()
-	{
-		if(canWork)
-		{
-			canWork = false;
-			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
-			{
-				@Override
-				public void run() {
-					canWork = true;
-				}
-				
-			}, 5L);
-			return true;
-		}
-		else
-		{
-			return false;
 		}
 	}
 }

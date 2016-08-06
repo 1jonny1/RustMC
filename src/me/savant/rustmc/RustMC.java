@@ -44,6 +44,7 @@ public class RustMC extends JavaPlugin implements Listener
 	{
 		FurnaceInstance.plugin = this;
 		Fire.plugin = this;
+		Util.plugin = this;
 		
 		pm = Bukkit.getPluginManager();
 		pm.registerEvents(this, this);
@@ -157,7 +158,7 @@ public class RustMC extends JavaPlugin implements Listener
 				@Override
 				public void onOptionClick(OptionClickEvent e)
 				{
-					if(work())
+					if(Util.work())
 					{
 						e.setWillClose(false);
 						e.setWillDestroy(false);
@@ -182,28 +183,6 @@ public class RustMC extends JavaPlugin implements Listener
 			}
 			itemMenu.open(p);
 			e.setCancelled(true);
-		}
-	}
-	
-	boolean canWork = true;
-	public boolean work()
-	{
-		if(canWork)
-		{
-			canWork = false;
-			Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable()
-			{
-				@Override
-				public void run() {
-					canWork = true;
-				}
-				
-			}, 5L);
-			return true;
-		}
-		else
-		{
-			return false;
 		}
 	}
 	

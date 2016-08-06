@@ -9,6 +9,7 @@ import me.savant.items.Item;
 import me.savant.items.ItemIndex;
 import me.savant.items.ItemType;
 import me.savant.rustmc.RustMC;
+import me.savant.rustmc.Util;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;
@@ -99,59 +100,62 @@ public class CraftingListener implements Listener
 			@Override
 			public void onOptionClick(OptionClickEvent e)
 			{
-				if(e.getClicked() != null && e.getClicked().getType() != Material.AIR && e.getClicked().getType() != Material.GRASS)
+				if(Util.work())
 				{
-					e.setWillClose(false);
-					e.setWillDestroy(false);
-					Player p = e.getPlayer();
-					List<String> lore = e.getClicked().getItemMeta().getLore();
-					if(ChatColor.stripColor(lore.get(0)).equalsIgnoreCase("[LOCKED]"))
+					if(e.getClicked() != null && e.getClicked().getType() != Material.AIR && e.getClicked().getType() != Material.GRASS)
 					{
-						p.playSound(p.getLocation(), Sound.CLICK, 1, 15);
-						return;
-					}
-					Item item = Item.getValue(e.getName());
-					if(item.getCost().hasResources(p))
-					{
-						item.getCost().takeResources(p);
-						p.getInventory().addItem(item.getItem());
-						p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 15);
-						ActionBarAPI.sendActionBar(p, ChatColor.GREEN + "Crafted " + item.getStrippedName(), 40);
-					}
-					else
-					{
-						String text = "";
-						int x = 1;
-						for(ResourceEntry entry : item.getCost().getEntrys())
+						e.setWillClose(false);
+						e.setWillDestroy(false);
+						Player p = e.getPlayer();
+						List<String> lore = e.getClicked().getItemMeta().getLore();
+						if(ChatColor.stripColor(lore.get(0)).equalsIgnoreCase("[LOCKED]"))
 						{
-							if(entry.getResource().isItem())
-							{
-								Item costItem = (Item) entry.getResource().getResource();
-								int amount = ItemIndex.getAmount(costItem.getItem().getType(), p.getInventory());
-								if(item.getCost().getEntrys().length == 1)
-									text = text + amount + " " + costItem.getStrippedName() + ", Needed " + entry.getAmount() + " " + entry.getUnit();
-								else if(item.getCost().getEntrys().length != x)
-									text = text + amount + " " + costItem.getStrippedName() + ", Needed " + entry.getAmount() + " " + entry.getUnit() + " | ";
-								else
-									text = text + amount + " " + costItem.getStrippedName() + ", Needed " + entry.getAmount() + " " + entry.getUnit();
-							}
-							else
-							{
-								ItemType costItem = (ItemType) entry.getResource().getResource();
-								int amount = ItemIndex.getAmount(ItemIndex.getType(costItem), p.getInventory());
-								if(item.getCost().getEntrys().length == 1)
-									text = text + amount + " " + ChatColor.stripColor(ItemIndex.getItem(costItem, 1).getItemMeta().getDisplayName()) + ", Needed " + entry.getAmount() + " " + entry.getUnit();
-								else if(item.getCost().getEntrys().length != x)
-									text = text + amount + " " + ChatColor.stripColor(ItemIndex.getItem(costItem, 1).getItemMeta().getDisplayName()) + ", Needed " + entry.getAmount() + " " + entry.getUnit() + " | ";
-								else
-									text = text + amount + " " + ChatColor.stripColor(ItemIndex.getItem(costItem, 1).getItemMeta().getDisplayName()) + ", Needed " + entry.getAmount() + " " + entry.getUnit();
-							}
-							x++;
+							p.playSound(p.getLocation(), Sound.CLICK, 1, 15);
+							return;
 						}
-						text = ChatColor.RED + "" + ChatColor.ITALIC + "" + text;
-						ActionBarAPI.sendActionBar(p, text, 480);
-						p.playSound(p.getLocation(), Sound.ITEM_BREAK, 1, 15);
-						return;
+						Item item = Item.getValue(e.getName());
+						if(item.getCost().hasResources(p))
+						{
+							item.getCost().takeResources(p);
+							p.getInventory().addItem(item.getItem());
+							p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 15);
+							ActionBarAPI.sendActionBar(p, ChatColor.GREEN + "Crafted " + item.getStrippedName(), 40);
+						}
+						else
+						{
+							String text = "";
+							int x = 1;
+							for(ResourceEntry entry : item.getCost().getEntrys())
+							{
+								if(entry.getResource().isItem())
+								{
+									Item costItem = (Item) entry.getResource().getResource();
+									int amount = ItemIndex.getAmount(costItem.getItem().getType(), p.getInventory());
+									if(item.getCost().getEntrys().length == 1)
+										text = text + amount + " " + costItem.getStrippedName() + ", Needed " + entry.getAmount() + " " + entry.getUnit();
+									else if(item.getCost().getEntrys().length != x)
+										text = text + amount + " " + costItem.getStrippedName() + ", Needed " + entry.getAmount() + " " + entry.getUnit() + " | ";
+									else
+										text = text + amount + " " + costItem.getStrippedName() + ", Needed " + entry.getAmount() + " " + entry.getUnit();
+								}
+								else
+								{
+									ItemType costItem = (ItemType) entry.getResource().getResource();
+									int amount = ItemIndex.getAmount(ItemIndex.getType(costItem), p.getInventory());
+									if(item.getCost().getEntrys().length == 1)
+										text = text + amount + " " + ChatColor.stripColor(ItemIndex.getItem(costItem, 1).getItemMeta().getDisplayName()) + ", Needed " + entry.getAmount() + " " + entry.getUnit();
+									else if(item.getCost().getEntrys().length != x)
+										text = text + amount + " " + ChatColor.stripColor(ItemIndex.getItem(costItem, 1).getItemMeta().getDisplayName()) + ", Needed " + entry.getAmount() + " " + entry.getUnit() + " | ";
+									else
+										text = text + amount + " " + ChatColor.stripColor(ItemIndex.getItem(costItem, 1).getItemMeta().getDisplayName()) + ", Needed " + entry.getAmount() + " " + entry.getUnit();
+								}
+								x++;
+							}
+							text = ChatColor.RED + "" + ChatColor.ITALIC + "" + text;
+							ActionBarAPI.sendActionBar(p, text, 480);
+							p.playSound(p.getLocation(), Sound.ITEM_BREAK, 1, 15);
+							return;
+						}
 					}
 				}
 			}
