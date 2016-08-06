@@ -117,7 +117,8 @@ public class Break implements Listener
 					ItemIndex.giveItem(ItemType.METAL_ORE, amount, p);
 				}
 			}
-			p.getItemInHand().setDurability((short) (p.getItemInHand().getDurability() + 5));
+			if(p.getItemInHand() != null && Util.isTool(p.getItemInHand().getType()))
+				p.getItemInHand().setDurability((short) (p.getItemInHand().getDurability() + 5));
 			e.setCancelled(true);
 		}
 		
@@ -138,7 +139,8 @@ public class Break implements Listener
 			int amount = 15;
 			amount *= getAxeBonus(p.getItemInHand());
 			ItemIndex.giveItem(ItemType.WOOD, amount, p);
-			p.getItemInHand().setDurability((short) (p.getItemInHand().getDurability() + 5));
+			if(p.getItemInHand() != null && Util.isTool(p.getItemInHand().getType()))
+				p.getItemInHand().setDurability((short) (p.getItemInHand().getDurability() + 5));
 			e.setCancelled(true);
 		}
 	}

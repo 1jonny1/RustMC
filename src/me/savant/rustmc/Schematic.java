@@ -1,4 +1,4 @@
-package me.savant.base;
+package me.savant.rustmc;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +19,8 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-public class Schematic {
+public class Schematic
+{
 	private short[] blocks;
 	private byte[] data;
 	private short width;
@@ -27,7 +28,8 @@ public class Schematic {
 	private short height;
 	private String name;
 	
-	public Schematic(short[] blocks, byte[] data, short width, short length, short height, String name) {
+	public Schematic(short[] blocks, byte[] data, short width, short length, short height, String name)
+	{
 		this.blocks = blocks;
 		this.data = data;
 		this.width = width;
@@ -39,35 +41,40 @@ public class Schematic {
 	/**
 	 * @return the blocks
 	 */
-	public short[] getBlocks() {
+	public short[] getBlocks()
+	{
 		return blocks;
 	}
 
 	/**
 	 * @return the data
 	 */
-	public byte[] getData() {
+	public byte[] getData()
+	{
 		return data;
 	}
 
 	/**
 	 * @return the width
 	 */
-	public short getWidth() {
+	public short getWidth()
+	{
 		return width;
 	}
 
 	/**
 	 * @return the length
 	 */
-	public short getLength() {
+	public short getLength()
+	{
 		return length;
 	}
 
 	/**
 	 * @return the height
 	 */
-	public short getHeight() {
+	public short getHeight()
+	{
 		return height;
 	}
 	
@@ -124,7 +131,8 @@ public class Schematic {
 	 * @param p
 	 * @return Time Operation Took
 	 */
-	public static long pasteSchematic(final World world, final Location loc, Schematic schematic, final Player p) {
+	public static long pasteSchematic(final World world, final Location loc, Schematic schematic, final Player p)
+	{
 		loc.getBlock().setType(Material.AIR);
 		final int i = 2;
 		final short[] blocks = schematic.getBlocks();
@@ -172,7 +180,8 @@ public class Schematic {
 	 * @return returns loaded Schematic from @param file
 	 * @throws IOException
 	 */
-	public static Schematic loadSchematic(File file) throws IOException {
+	public static Schematic loadSchematic(File file) throws IOException
+	{
 		FileInputStream stream = new FileInputStream(file);
 		@SuppressWarnings("resource")
 		NBTInputStream nbtStream = new NBTInputStream(stream);

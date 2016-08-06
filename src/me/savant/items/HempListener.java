@@ -1,8 +1,8 @@
 package me.savant.items;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,9 +14,12 @@ public class HempListener implements Listener
 	public void onInteract(PlayerInteractEvent e)
 	{
 		Block clicked = e.getClickedBlock();
-		if(clicked != null && clicked.getTypeId() == 31 && clicked.getData() == (byte) 2)
+		if(clicked != null && clicked.getTypeId() == 175)
 		{
-			clicked.setType(Material.AIR);
+			if(clicked.getRelative(BlockFace.DOWN).getType() != Material.GRASS)
+				clicked.getRelative(BlockFace.DOWN).setType(Material.AIR);
+			else
+				clicked.setType(Material.AIR);
 			Player p = e.getPlayer();
 			ItemIndex.giveItem(ItemType.CLOTH, 5, p);
 		}

@@ -5,3 +5,5 @@ main: me.savant.rustmc.RustMC
 commands:
   about:
   rspawn:
+  set:
+  values:

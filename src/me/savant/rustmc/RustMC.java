@@ -13,6 +13,7 @@ import me.savant.items.HempListener;
 import me.savant.items.Item;
 import me.savant.items.ItemListener;
 import me.savant.rustmc.ItemMenu.OptionClickEvent;
+import me.savant.terrain.MaterialGeneration;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -74,16 +75,7 @@ public class RustMC extends JavaPlugin implements Listener
 						p.sendMessage(ChatColor.GRAY + "Starting Ore Regeneration");
 					}
 				}
-				
-				long duration = matGen.update();
-				
-				for(Player p : Bukkit.getOnlinePlayers())
-				{
-					if(p.isOp() || p.hasPermission("admin") || p.hasPermission("staff"))
-					{
-						p.sendMessage(ChatColor.GRAY + "Ended... Took " + duration + "ms");
-					}
-				}
+				matGen.update();
 			}
 			
 		}, 0L, time);
@@ -122,9 +114,14 @@ public class RustMC extends JavaPlugin implements Listener
 		{
 			p.sendMessage(ChatColor.GRAY + "Starting Ore Regeneration");
 
-			long duration = matGen.update();
+			matGen.update();
+			e.setCancelled(true);
+		}
+		if(message.equalsIgnoreCase("regen-terrain"))
+		{
+			p.sendMessage(ChatColor.GRAY + "Starting Terrain Regeneration");
 			
-			p.sendMessage(ChatColor.GRAY + "Ended... Took " + duration + "ms");
+			matGen.updateAll();
 			e.setCancelled(true);
 		}
 		if(message.equalsIgnoreCase("building"))
@@ -236,6 +233,65 @@ public class RustMC extends JavaPlugin implements Listener
 			p.sendMessage(ChatColor.GRAY + prefix + "Spawned at X: " + x + " Z: " + z);
 			p.teleport(teleportLocation);
 			return true;
+		}
+		if(cmd.getName().equalsIgnoreCase("set"))
+		{
+			Player p = (Player) sender;
+			if(args.length == 2)
+			{
+				String type = args[0];
+				if(type.equalsIgnoreCase("octave"))
+				{
+					try
+					{
+						int octave = Integer.parseInt(args[1]);
+						matGen.terrain.setOctaves(octave);
+						p.sendMessage(ChatColor.GRAY + "Octaves set to " + matGen.terrain.getOctaves());
+					}
+					catch (NumberFormatException e)
+					{
+						p.sendMessage(ChatColor.RED + args[1] + " is not a Integer");
+					}
+					return true;
+				}
+				else if(type.equalsIgnoreCase("amplitude"))
+				{
+					try
+					{
+						float amplitude = Float.parseFloat(args[1]);
+						matGen.terrain.setAmplitude(amplitude);
+						p.sendMessage(ChatColor.GRAY + "Amplitude set to " + matGen.terrain.getAmplitude());
+					}
+					catch (NumberFormatException e)
+					{
+						p.sendMessage(ChatColor.RED + args[1] + " is not a Floating point Value");
+					}
+					return true;
+				}
+				else if(type.equalsIgnoreCase("roughness"))
+				{
+					try
+					{
+						float roughness = Float.parseFloat(args[1]);
+						matGen.terrain.setRoughness(roughness);
+						p.sendMessage(ChatColor.GRAY + "Roughness set to " + matGen.terrain.getRoughness());
+					}
+					catch (NumberFormatException e)
+					{
+						p.sendMessage(ChatColor.RED + args[1] + " is not a Floating point Value");
+					}
+					return true;
+				}
+			}
+			p.sendMessage("/set <octave | amplitude | roughness> <value>");
+			return true;
+		}
+		if(cmd.getName().equalsIgnoreCase("values"))
+		{
+			Player p = (Player) sender;
+			p.sendMessage(ChatColor.GRAY + "OCTAVES: " + matGen.terrain.getOctaves());
+			p.sendMessage(ChatColor.GRAY + "AMPLITUDE: " + matGen.terrain.getAmplitude());
+			p.sendMessage(ChatColor.GRAY + "ROUGHNESS: " + matGen.terrain.getRoughness());
 		}
 		return false;
 	}
