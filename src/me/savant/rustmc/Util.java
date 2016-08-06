@@ -34,7 +34,7 @@ public class Util
 				{
 					canWork = true;
 				}
-			}, 5L);
+			}, 2L);
 			return true;
 		}
 		else

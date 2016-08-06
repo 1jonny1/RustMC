@@ -104,8 +104,6 @@ public class CraftingListener implements Listener
 				{
 					if(e.getClicked() != null && e.getClicked().getType() != Material.AIR && e.getClicked().getType() != Material.GRASS)
 					{
-						e.setWillClose(false);
-						e.setWillDestroy(false);
 						Player p = e.getPlayer();
 						List<String> lore = e.getClicked().getItemMeta().getLore();
 						if(ChatColor.stripColor(lore.get(0)).equalsIgnoreCase("[LOCKED]"))

@@ -82,26 +82,10 @@ public class CraftingMenu implements Listener
             int slot = event.getRawSlot();
             if (slot >= 0 && slot < size && optionNames[slot] != null)
             {
-                Plugin plugin = this.plugin;
                 ItemStack item = event.getCurrentItem();
                 String name = item.getItemMeta().getDisplayName();
                 OptionClickEvent e = new OptionClickEvent((Player)event.getWhoClicked(), slot, name, item);
                 handler.onOptionClick(e);
-                if (e.willClose())
-                {
-                    final Player p = (Player)event.getWhoClicked();
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
-                    {
-                        public void run()
-                        {
-                            p.closeInventory();
-                        }
-                    }, 1);
-                }
-                if (e.willDestroy())
-                {
-                    destroy();
-                }
             }
         }
     }
