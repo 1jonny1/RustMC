@@ -95,15 +95,6 @@ public class RustMC extends JavaPlugin implements Listener
 			p.sendMessage(ChatColor.DARK_RED + "RustMC");
 			e.setCancelled(true);
 		}
-		if(message.equalsIgnoreCase("reset"))
-		{
-			p.sendMessage(ChatColor.GRAY + "Starting Full Reset");
-			
-			long duration = matGen.reset();
-			
-			p.sendMessage(ChatColor.GRAY + "Ended.. Took " + duration + "ms");
-			e.setCancelled(true);
-		}
 		if(message.equalsIgnoreCase("building"))
 		{
 			p.sendMessage(ChatColor.GRAY + "Giving Building Plan");
@@ -271,6 +262,18 @@ public class RustMC extends JavaPlugin implements Listener
 				}
 				p.sendMessage("/regen [full]");
 				return true;
+			}
+			else
+			{
+				p.sendMessage(ChatColor.RED + "Reported to Staff.");
+			}
+		}
+		if(cmd.getName().equalsIgnoreCase("reset"))
+		{
+			Player p = (Player) sender;
+			if(p.isOp())
+			{
+				matGen.reset();
 			}
 			else
 			{

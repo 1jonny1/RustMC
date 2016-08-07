@@ -55,73 +55,125 @@ public class MaterialGeneration
 	
 	public void updateAll()
 	{
+		Util.sendServerMessage("Full Terrain Reset in progress. You " + ChatColor.BOLD + "WILL" + ChatColor.RESET + "" + ChatColor.GOLD + " experience major lag.");
+		
+		terrain = new Terrain();
+		r = new Random();
+		r.setSeed(terrain.getSeed());
 		Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("RustMC"), new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				Util.sendServerMessage("Full Terrain Reset in progress. You " + ChatColor.BOLD + "WILL" + ChatColor.RESET + "" + ChatColor.GOLD + " experience major lag.");
-				
-				final long startTime = System.currentTimeMillis();
-				
-				terrain = new Terrain();
-				r = new Random();
-				r.setSeed(terrain.getSeed());
-				
-				Util.sendServerMessage("0%");
-				reset();
 				Util.sendServerMessage("10%");
 				terrainGeneration();
-				Util.sendServerMessage("20%");
-				naturalize();
-				Util.sendServerMessage("30%");
-				oreGeneration();
-				Util.sendServerMessage("40%");
-				treeGeneration();
-				Util.sendServerMessage("50%");
-				barrelGeneration();
-				Util.sendServerMessage("60%");
-				hempGeneration();
-				Util.sendServerMessage("70%");
-				buildingGeneration();
-				Util.sendServerMessage("80%");
-				grassalize();
-				Util.sendServerMessage("90%");
-				cleanupEntities();
-				Util.sendServerMessage("100%");
-				
-				long duration = System.currentTimeMillis() - startTime;
-				Util.sendStaffMessage("Terrain Generation finished.. Took " + duration + "ms");
+				Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("RustMC"), new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						Util.sendServerMessage("20%");
+						naturalize();
+						Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("RustMC"), new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								Util.sendServerMessage("30%");
+								oreGeneration();
+								Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("RustMC"), new Runnable()
+								{
+									@Override
+									public void run()
+									{
+										Util.sendServerMessage("40%");
+										treeGeneration();
+										Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("RustMC"), new Runnable()
+										{
+											@Override
+											public void run()
+											{
+												Util.sendServerMessage("50%");
+												barrelGeneration();
+												Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("RustMC"), new Runnable()
+												{
+													@Override
+													public void run()
+													{
+														Util.sendServerMessage("60%");
+														hempGeneration();
+														Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("RustMC"), new Runnable()
+														{
+															@Override
+															public void run()
+															{
+																Util.sendServerMessage("70%");
+																buildingGeneration();
+																Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("RustMC"), new Runnable()
+																{
+																	@Override
+																	public void run()
+																	{
+																		Util.sendServerMessage("80%");
+																		grassalize();
+																		Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("RustMC"), new Runnable()
+																		{
+																			@Override
+																			public void run()
+																			{
+																				Util.sendServerMessage("90%");
+																				cleanupEntities();
+																				Util.sendServerMessage("Terrain Generation finished!");
+																			}
+																		});
+																	}
+																});
+															}
+														});
+													}
+												});
+											}
+										});
+									}
+								});
+							}
+						});
+					}
+				});
 			}
 		});
 	}
 	
-	public long reset()
+	public void reset()
 	{
-		long startTime = System.currentTimeMillis();
-		
-		for(int x = 0; x < size; x++)
+		Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("RustMC"), new Runnable()
 		{
-			for(int z = 0; z < size; z++)
+			@Override
+			public void run()
 			{
-				for(int y = 60; y > 1; y--)
+				Util.sendServerMessage("Resetting Terrain. You will experience lag!");
+				for(int x = 0; x < size; x++)
 				{
-					new Location(world, x, y, z).getBlock().setType(Material.AIR);
+					for(int z = 0; z < size; z++)
+					{
+						for(int y = level; y < 150; y++)
+						{
+							new Location(world, x, y, z).getBlock().setType(Material.AIR);
+						}
+					}
 				}
+				
+				for(int x = 0; x < size; x++)
+				{
+					for(int z = 0; z < size; z++)
+					{
+						new Location(world, x, level - 1, z).getBlock().setType(Material.GRASS);
+					}
+				}
+				cleanupEntities();
+				Util.sendStaffMessage("Terrain Reset finished.");
 			}
-		}
-		
-		for(int x = 0; x < size; x++)
-		{
-			for(int z = 0; z < size; z++)
-			{
-				new Location(world, x, level - 1, z).getBlock().setType(Material.GRASS);
-			}
-		}
-		cleanupEntities();
-		
-		long endTime = System.currentTimeMillis();
-		return endTime - startTime;
+		});
 	}
 	
 	private void cleanupEntities()
@@ -149,7 +201,7 @@ public class MaterialGeneration
 					loc = randomLocation();
 					System.out.println(loc.toVector().toString());
 					iteration++;
-					if(iteration > 30)
+					if(iteration > 5)
 					{
 						System.out.println("[RustMC] Cannot find suitable location for building_" + i);
 						return;
