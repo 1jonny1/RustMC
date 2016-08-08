@@ -54,7 +54,7 @@ public class Death implements Listener
 					Inventory inventory = Bukkit.createInventory(e.getPlayer(), 45, ChatColor.BOLD + "Body Loot");
 					inventory.setContents(list);
 					p.openInventory(inventory);
-					p.playSound(p.getLocation(), Sound.CHEST_OPEN, 1, 15);
+					p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 15);
 				}
 			}
 			else
@@ -83,12 +83,12 @@ public class Death implements Listener
 			{
 				block.setType(Material.AIR);
 				block.getLocation().add(0, -1, 0).getBlock().setType(Material.GRASS);
-				p.playSound(p.getLocation(), Sound.ITEM_BREAK, 1, 15);
+				p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 15);
 				System.out.println("[RustMC] Body has no content, removing...");
 			}
 			else
 			{
-				p.playSound(p.getLocation(), Sound.CHEST_CLOSE, 1, 15);
+				p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 15);
 				System.out.println("[RustMC] Saved Body contents to block!");
 				block.setMetadata("body", new FixedMetadataValue(plugin, e.getInventory().getContents()));
 			}

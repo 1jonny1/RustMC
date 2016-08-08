@@ -42,18 +42,18 @@ public class Fire
 			public void run()
 			{
 				if(random.nextFloat() < 0.8)
-					playSound(Sound.FIRE, 1, 6);
+					playSound(Sound.BLOCK_FIRE_AMBIENT, 1, 6);
 				if(random.nextFloat() < 0.8)
-					playSound(Sound.FIRE, 1, 4);
+					playSound(Sound.BLOCK_FIRE_AMBIENT, 1, 4);
 				if(random.nextFloat() < 0.3)
 				{
 					if(random.nextBoolean())
 					{
-						playSound(Sound.FUSE, 0.3f, 15);
+						playSound(Sound.ENTITY_TNT_PRIMED, 0.3f, 15);
 					}
 					else
 					{
-						playSound(Sound.FIZZ, 0.1f, 45);
+						playSound(Sound.ENTITY_CREEPER_PRIMED, 0.1f, 45);
 					}
 				}
 			}

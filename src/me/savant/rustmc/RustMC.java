@@ -100,7 +100,7 @@ public class RustMC extends JavaPlugin implements Listener
 			p.sendMessage(ChatColor.GRAY + "Giving Building Plan");
 			p.getInventory().addItem(Item.BUILDING_PLAN.getItem());
 			
-			p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 15);
+			p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 15);
 			
 			e.setCancelled(true);
 		}
@@ -117,7 +117,7 @@ public class RustMC extends JavaPlugin implements Listener
 			
 			e.getPlayer().getInventory().setItem(8, item);
 			
-			p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 15);
+			p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 15);
 			
 			e.setCancelled(true);
 		}
@@ -134,7 +134,7 @@ public class RustMC extends JavaPlugin implements Listener
 						e.setWillDestroy(false);
 						Player p = e.getPlayer();
 						p.getInventory().addItem(Item.getValue(e.getName()).getItem());
-						p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 15);
+						p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 15);
 						p.updateInventory();
 					}
 				}

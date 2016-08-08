@@ -242,7 +242,7 @@ public class ItemIndex
 	{
 		p.getInventory().addItem(getItem(type, amount));
 		p.updateInventory();
-		p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 15);
+		p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 15);
 		ActionBarAPI.sendActionBar(p, ChatColor.GOLD + "+" + amount + " " + getName(type), 20);
 	}
 }

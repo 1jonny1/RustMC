@@ -32,7 +32,7 @@ public class BlueprintListener implements Listener
 			Loot loot = new Loot(e.getClickedBlock(), plugin);
 			loot.randomizeLoot();
 			loot.open(p);
-			p.playSound(p.getLocation(), Sound.CHEST_OPEN, 1, 15);
+			p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 15);
 		}
 		if(e.getItem() != null && e.getItem().hasItemMeta() && e.getItem().getItemMeta().hasLore())
 		{
@@ -42,12 +42,12 @@ public class BlueprintListener implements Listener
 			{
 				if(Blueprint.hasBlueprint(p, item.getType()))
 				{
-					p.playSound(p.getLocation(), Sound.CLICK, 1, 15);
+					p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 1, 15);
 					ActionBarAPI.sendActionBar(p, ChatColor.RED + "" + ChatColor.ITALIC + "Blueprint already learned!", 40);
 				}
 				else
 				{
-					p.playSound(p.getLocation(), Sound.LEVEL_UP, 1, 15);
+					p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 15);
 					ActionBarAPI.sendActionBar(p, ChatColor.GREEN + "Blueprint learned!", 40);
 					Blueprint.addBlueprint(p, item.getType());
 					ItemIndex.removeItem(item.getType(), 1, p.getInventory());

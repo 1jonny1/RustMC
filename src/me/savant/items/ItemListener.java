@@ -20,7 +20,7 @@ public class ItemListener implements Listener
 				if(p.getHealth() < 18)
 				{
 					p.setHealth(p.getHealth() + 2);
-					p.playSound(p.getLocation(), Sound.DRINK, 1, 15);
+					p.playSound(p.getLocation(), Sound.ENTITY_GENERIC_DRINK, 1, 15);
 					ItemIndex.removeItem(Material.WOOL, 1, p.getInventory());
 				}
 			}

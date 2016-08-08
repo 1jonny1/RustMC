@@ -108,7 +108,7 @@ public class CraftingListener implements Listener
 						List<String> lore = e.getClicked().getItemMeta().getLore();
 						if(ChatColor.stripColor(lore.get(0)).equalsIgnoreCase("[LOCKED]"))
 						{
-							p.playSound(p.getLocation(), Sound.CLICK, 1, 15);
+							p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 1, 15);
 							return;
 						}
 						Item item = Item.getValue(e.getName());
@@ -116,7 +116,7 @@ public class CraftingListener implements Listener
 						{
 							item.getCost().takeResources(p);
 							p.getInventory().addItem(item.getItem());
-							p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 1, 15);
+							p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 15);
 							ActionBarAPI.sendActionBar(p, ChatColor.GREEN + "Crafted " + item.getStrippedName(), 40);
 						}
 						else
@@ -151,7 +151,7 @@ public class CraftingListener implements Listener
 							}
 							text = ChatColor.RED + "" + ChatColor.ITALIC + "" + text;
 							ActionBarAPI.sendActionBar(p, text, 480);
-							p.playSound(p.getLocation(), Sound.ITEM_BREAK, 1, 15);
+							p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 15);
 							return;
 						}
 					}

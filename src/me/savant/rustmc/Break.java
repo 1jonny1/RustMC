@@ -43,7 +43,7 @@ public class Break implements Listener
 			Player p = e.getPlayer();
 			if(p.getItemInHand().getDurability() > p.getItemInHand().getType().getMaxDurability())
 			{
-				p.playSound(p.getLocation(), Sound.ITEM_BREAK, 5, 15);
+				p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 5, 15);
 				e.setCancelled(true);
 				p.updateInventory();
 				return;
@@ -52,7 +52,7 @@ public class Break implements Listener
 			{
 				e.getBlock().setType(Material.AIR);
 				e.getBlock().getLocation().subtract(0, 1, 0).getBlock().setType(Material.GRASS);
-				p.playSound(p.getLocation(), Sound.ITEM_BREAK, 1, 15);
+				p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 15);
 			}
 			if(type == Material.IRON_ORE)
 			{
@@ -134,7 +134,7 @@ public class Break implements Listener
 					y = y1;
 				}
 				breakTree(e.getBlock());
-				p.playSound(p.getLocation(), Sound.ITEM_BREAK, 1, 15);
+				p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 15);
 			}
 			int amount = 15;
 			amount *= getAxeBonus(p.getItemInHand());
