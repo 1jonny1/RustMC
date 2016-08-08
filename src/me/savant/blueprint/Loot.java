@@ -133,7 +133,7 @@ public class Loot implements Listener
         	
         	setOption(x, item, item.getItemMeta().getDisplayName(), info);
     	}
-    	if(chance(50f))
+    	if(chance(15f))
     	{
     		Item[] locked = Item.getLockedItems();
     		Item item = locked[random.nextInt(locked.length)];
