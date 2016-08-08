@@ -1,5 +1,6 @@
 name: RustMC
 version: 1.0
+depend: [Multiverse-Core]
 description: Created by _Savant (savant.eclipse)
 main: me.savant.rustmc.RustMC
 commands:
