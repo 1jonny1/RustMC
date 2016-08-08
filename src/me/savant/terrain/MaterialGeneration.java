@@ -17,6 +17,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 public class MaterialGeneration
@@ -180,7 +181,10 @@ public class MaterialGeneration
 	{
 		for(Entity entity : world.getEntities())
 		{
-			entity.remove();
+			if(entity.getType() == EntityType.DROPPED_ITEM)
+			{
+				entity.remove();
+			}
 		}
 	}
 	

@@ -26,7 +26,16 @@ public enum Item
 	BOW,
 	ARROW,
 	SHOTGUN,
-	SHOTGUN_SHELLS;
+	PUMP_SHOTGUN,
+	SHOTGUN_SHELLS,
+	MAKESHIFT_PISTOL,
+	PISTOL,
+	SUBMACHINE_GUN,
+	PISTOL_AMMO,
+	RIFLE,
+	SNIPER_RIFLE,
+	AK47,
+	ASSAULT_AMMO;
 	
 	public boolean isDefaultItem()
 	{
@@ -139,8 +148,26 @@ public enum Item
 				return createItem(new ItemStack(Material.WOOD_SWORD, 1), "Wood Sword", none);
 			case SHOTGUN:
 				return createItem(new ItemStack(Material.getMaterial(418), 1), "Shotgun", none);
+			case PUMP_SHOTGUN:
+				return createItem(new ItemStack(Material.getMaterial(419), 1), "Pump Shotgun", none);
 			case SHOTGUN_SHELLS:
-				return createItem(new ItemStack(Material.getMaterial(351), 1, (short) 3), "Shotgun Shells", none);
+				return createItem(new ItemStack(Material.getMaterial(351), 1, (short) 3), "Shotgun Shells", new String[] { ChatColor.GRAY + "Used With:", ChatColor.GRAY + "  + Shotgun", ChatColor.GRAY + "  + Pump Shotgun" });
+			case MAKESHIFT_PISTOL:
+				return createItem(new ItemStack(Material.IRON_HOE, 1), "Makeshift Pistol", none);
+			case PISTOL:
+				return createItem(new ItemStack(Material.GOLD_HOE, 1), "Pistol", none);
+			case SUBMACHINE_GUN:
+				return createItem(new ItemStack(Material.DIAMOND_HOE, 1), "Submachine Gun", none);
+			case PISTOL_AMMO:
+				return createItem(new ItemStack(Material.SEEDS, 1), "Pistol Ammo", new String[] { ChatColor.GRAY + "Used With:", ChatColor.GRAY + "  + Makeshift Pistol", ChatColor.GRAY + "  + Pistol", ChatColor.GRAY + "  + Submachine Gun"});
+			case RIFLE:
+				return createItem(new ItemStack(Material.IRON_SPADE, 1), "Rifle", none);
+			case SNIPER_RIFLE:
+				return createItem(new ItemStack(Material.GOLD_SPADE, 1), "Sniper Rifle", none);
+			case AK47:
+				return createItem(new ItemStack(Material.DIAMOND_SPADE, 1), "AK47", none);
+			case ASSAULT_AMMO:
+				return createItem(new ItemStack(Material.MELON_SEEDS, 1), "Assault Ammo", none);
 		}
 		return new ItemStack(Material.AIR, 1);
 	}
@@ -222,11 +249,66 @@ public enum Item
 					new ResourceEntry("Metal", new Resource(ItemType.METAL), 100),
 					new ResourceEntry("Wood", new Resource(ItemType.WOOD), 25)
 				});
+			case PUMP_SHOTGUN:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Metal", new Resource(ItemType.METAL), 250),
+					new ResourceEntry("Wood", new Resource(ItemType.WOOD), 100)
+				});
 			case SHOTGUN_SHELLS:
 				return new ResourceCost(new ResourceEntry[]
 				{
 					new ResourceEntry("Stone", new Resource(ItemType.STONE), 5),
 					new ResourceEntry("Sulfur", new Resource(ItemType.SULFUR), 5)
+				});
+			case MAKESHIFT_PISTOL:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Stone", new Resource(ItemType.STONE), 225),
+					new ResourceEntry("Wood", new Resource(ItemType.SULFUR), 100)
+				});
+			case PISTOL:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Metal", new Resource(ItemType.METAL), 125),
+					new ResourceEntry("High Quality Metal", new Resource(ItemType.HIGH_QUALITY_METAL), 5)
+				});
+			case SUBMACHINE_GUN:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Metal", new Resource(ItemType.METAL), 50),
+					new ResourceEntry("High Quality Metal", new Resource(ItemType.HIGH_QUALITY_METAL), 20),
+					new ResourceEntry("Wood", new Resource(ItemType.WOOD), 100)
+				});
+			case PISTOL_AMMO:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Metal", new Resource(ItemType.METAL), 2),
+					new ResourceEntry("Sulfur", new Resource(ItemType.SULFUR), 5)
+				});
+			case RIFLE:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Metal", new Resource(ItemType.METAL), 250),
+					new ResourceEntry("High Quality Metal", new Resource(ItemType.HIGH_QUALITY_METAL), 100)
+				});
+			case SNIPER_RIFLE:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Metal", new Resource(ItemType.METAL), 350),
+					new ResourceEntry("High Quality Metal", new Resource(ItemType.HIGH_QUALITY_METAL), 200)
+				});
+			case AK47:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Metal", new Resource(ItemType.METAL), 400),
+					new ResourceEntry("High Quality Metal", new Resource(ItemType.HIGH_QUALITY_METAL), 550)
+				});
+			case ASSAULT_AMMO:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Metal", new Resource(ItemType.METAL), 5),
+					new ResourceEntry("Sulfur", new Resource(ItemType.SULFUR), 10)
 				});
 		}
 		return null;
