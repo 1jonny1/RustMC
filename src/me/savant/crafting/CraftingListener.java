@@ -22,6 +22,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -77,6 +78,23 @@ public class CraftingListener implements Listener
 		{
 			e.setCancelled(true);
 			openCrafting(e.getPlayer());
+		}
+	}
+	
+	@EventHandler
+	void onMove(PlayerMoveEvent e)
+	{
+		if(e.getPlayer().getInventory().getItem(8) == null || e.getPlayer().getInventory().getItem(8).getType() != Material.WORKBENCH)
+		{
+			ItemStack item = new ItemStack(Material.WORKBENCH, 1);
+			ItemMeta meta = item.getItemMeta();
+			meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "Crafting");
+			List<String> lore = new ArrayList<String>();
+			lore.add(ChatColor.BLUE + "Click to open the Crafting Menu");
+			meta.setLore(lore);
+			item.setItemMeta(meta);
+			e.getPlayer().getInventory().setItem(8, item);
+			System.out.println("[RustMC] Updated " + e.getPlayer().getName() + " inventory to include a crafting table!");
 		}
 	}
 	

@@ -1,5 +1,6 @@
 package me.savant.rustmc;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -32,8 +33,15 @@ public class Death implements Listener
 		Block block = e.getEntity().getLocation().getBlock();
 		block.setType(Material.CHEST);
 		
-		List<ItemStack> drops = e.getDrops();
-		block.setMetadata("body", new FixedMetadataValue(plugin, drops.toArray(new ItemStack[drops.size()])));
+		List<ItemStack> sorted = new ArrayList<ItemStack>();
+		for(ItemStack drop : e.getDrops())
+		{
+			if(drop != null && drop.getType() != Material.WORKBENCH)
+			{
+				sorted.add(drop);
+			}
+		}
+		block.setMetadata("body", new FixedMetadataValue(plugin, sorted.toArray(new ItemStack[sorted.size()])));
 		e.getDrops().clear();
 	}
 	
