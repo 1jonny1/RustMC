@@ -1,6 +1,5 @@
 package me.savant.furnace;
 
-import me.savant.fire.Fire;
 import me.savant.items.ItemIndex;
 import me.savant.items.ItemType;
 import me.savant.rustmc.RustMC;

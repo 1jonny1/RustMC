@@ -1,4 +1,4 @@
-package me.savant.fire;
+package me.savant.furnace;
 
 import java.util.Random;
 

@@ -6,7 +6,7 @@ import java.util.Random;
 
 import me.savant.blueprint.BlueprintListener;
 import me.savant.crafting.CraftingListener;
-import me.savant.fire.Fire;
+import me.savant.furnace.Fire;
 import me.savant.furnace.Furnace;
 import me.savant.furnace.FurnaceInstance;
 import me.savant.items.HempListener;
