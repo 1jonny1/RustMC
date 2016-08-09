@@ -13,6 +13,7 @@ import me.savant.items.HempListener;
 import me.savant.items.Item;
 import me.savant.items.ItemListener;
 import me.savant.rustmc.ItemMenu.OptionClickEvent;
+import me.savant.terrain.Animal;
 import me.savant.terrain.MaterialGeneration;
 
 import org.bukkit.Bukkit;
@@ -55,6 +56,7 @@ public class RustMC extends JavaPlugin implements Listener
 		pm.registerEvents(new Death(this), this);
 		pm.registerEvents(new HempListener(), this);
 		pm.registerEvents(new ItemListener(), this);
+		pm.registerEvents(new Animal(), this);
 		
 		matGen = new MaterialGeneration();
 		

@@ -48,7 +48,8 @@ public class MaterialGeneration
 		treeGeneration();
 		barrelGeneration();
 		hempGeneration();
-		cleanupEntities();		
+		cleanupEntities();
+		animalGeneration();
 		
 		long duration = System.currentTimeMillis() - startTime;
 		Util.sendStaffMessage("Automatic Terrain Refill finished... Took " + duration + "ms");
@@ -124,6 +125,7 @@ public class MaterialGeneration
 																			{
 																				Util.sendServerMessage("90%");
 																				cleanupEntities();
+																				animalGeneration();
 																				Util.sendServerMessage("Terrain Generation finished!");
 																			}
 																		});
@@ -181,7 +183,7 @@ public class MaterialGeneration
 	{
 		for(Entity entity : world.getEntities())
 		{
-			if(entity.getType() == EntityType.DROPPED_ITEM)
+			if(entity.getType() == EntityType.DROPPED_ITEM || entity.getType() == EntityType.COW || entity.getType() == EntityType.HORSE || entity.getType() == EntityType.PIG || entity.getType() == EntityType.CHICKEN)
 			{
 				entity.remove();
 			}
@@ -386,6 +388,36 @@ public class MaterialGeneration
 					{
 						block.setTypeIdAndData(175, (byte) 5, true);
 						block.getRelative(BlockFace.UP).setTypeIdAndData(175, (byte) 8, true);
+					}
+				}
+			}
+		}
+	}
+	
+	private void animalGeneration()
+	{
+		for(int x = 0; x < size; x++)
+		{
+			for(int z = 0; z < size; z++)
+			{
+				if(chance(0.04f))
+				{
+					Location loc = new Location(world, x, world.getHighestBlockYAt(x, z), z);
+					if(chance(25))
+					{
+						world.spawnEntity(loc, EntityType.COW);
+					}
+					else if(chance(50))
+					{
+						world.spawnEntity(loc, EntityType.PIG);
+					}
+					else if(chance(75))
+					{
+						world.spawnEntity(loc, EntityType.CHICKEN);
+					}
+					else
+					{
+						world.spawnEntity(loc, EntityType.HORSE);
 					}
 				}
 			}

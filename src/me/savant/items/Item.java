@@ -35,7 +35,11 @@ public enum Item
 	RIFLE,
 	SNIPER_RIFLE,
 	AK47,
-	ASSAULT_AMMO;
+	ASSAULT_AMMO,
+	CLOTH_BOOTS,
+	CLOTH_PANTS,
+	CLOTH_SHIRT,
+	CLOTH_HAT;
 	
 	public boolean isDefaultItem()
 	{
@@ -49,6 +53,10 @@ public enum Item
 			case BOW:
 			case ARROW:
 			case WOOD_SWORD:
+			case CLOTH_BOOTS:
+			case CLOTH_PANTS:
+			case CLOTH_SHIRT:
+			case CLOTH_HAT:
 				return true;
 		}
 		return false;
@@ -168,6 +176,14 @@ public enum Item
 				return createItem(new ItemStack(Material.DIAMOND_SPADE, 1), "AK47", none);
 			case ASSAULT_AMMO:
 				return createItem(new ItemStack(Material.MELON_SEEDS, 1), "Assault Ammo", none);
+			case CLOTH_BOOTS:
+				return createItem(new ItemStack(Material.LEATHER_BOOTS, 1), "Cloth Boots", none);
+			case CLOTH_PANTS:
+				return createItem(new ItemStack(Material.LEATHER_LEGGINGS, 1), "Cloth Pants", none);
+			case CLOTH_SHIRT:
+				return createItem(new ItemStack(Material.LEATHER_CHESTPLATE, 1), "Cloth Shirt", none);
+			case CLOTH_HAT:
+				return createItem(new ItemStack(Material.LEATHER_HELMET, 1), "Cloth Hat", none);
 		}
 		return new ItemStack(Material.AIR, 1);
 	}
@@ -309,6 +325,26 @@ public enum Item
 				{
 					new ResourceEntry("Metal", new Resource(ItemType.METAL), 5),
 					new ResourceEntry("Sulfur", new Resource(ItemType.SULFUR), 10)
+				});
+			case CLOTH_BOOTS:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Cloth", new Resource(ItemType.CLOTH), 30)	
+				});
+			case CLOTH_PANTS:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Cloth", new Resource(ItemType.CLOTH), 50)	
+				});
+			case CLOTH_SHIRT:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Cloth", new Resource(ItemType.CLOTH), 60)	
+				});
+			case CLOTH_HAT:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Cloth", new Resource(ItemType.CLOTH), 20)	
 				});
 		}
 		return null;

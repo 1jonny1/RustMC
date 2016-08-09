@@ -59,6 +59,12 @@ public class ItemIndex
 			return Material.COBBLESTONE;
 		if(type == ItemType.CLOTH)
 			return Material.STRING;
+		if(type == ItemType.BEEF)
+			return Material.COOKED_BEEF;
+		if(type == ItemType.CHICKEN)
+			return Material.COOKED_CHICKEN;
+		if(type == ItemType.PORK)
+			return Material.GRILLED_PORK;
 		return null;
 	}
 	
@@ -84,6 +90,12 @@ public class ItemIndex
 				return ItemType.HIGH_QUALITY_METAL;
 			case STRING:
 				return ItemType.CLOTH;
+			case COOKED_BEEF:
+				return ItemType.BEEF;
+			case COOKED_CHICKEN:
+				return ItemType.CHICKEN;
+			case GRILLED_PORK:
+				return ItemType.PORK;
 			default:
 				return null;
 		}
@@ -148,6 +160,12 @@ public class ItemIndex
 			return ItemType.HIGH_QUALITY_METAL;
 		if(itemName.equalsIgnoreCase("Cloth"))
 			return ItemType.CLOTH;
+		if(itemName.equalsIgnoreCase("Beef"))
+			return ItemType.BEEF;
+		if(itemName.equalsIgnoreCase("Chicken"))
+			return ItemType.CHICKEN;
+		if(itemName.equalsIgnoreCase("Pork"))
+			return ItemType.PORK;
 		return null;
 	}
 	
@@ -229,6 +247,30 @@ public class ItemIndex
 			meta.setDisplayName(ChatColor.BLUE + "Cloth");
 			cloth.setItemMeta(meta);
 			return cloth;
+		}
+		if(type == ItemType.BEEF)
+		{
+			ItemStack beef = new ItemStack(Material.COOKED_BEEF, amount);
+			ItemMeta meta = beef.getItemMeta();
+			meta.setDisplayName(ChatColor.BLUE + "Beef");
+			beef.setItemMeta(meta);
+			return beef;
+		}
+		if(type == ItemType.CHICKEN)
+		{
+			ItemStack chicken = new ItemStack(Material.COOKED_CHICKEN, amount);
+			ItemMeta meta = chicken.getItemMeta();
+			meta.setDisplayName(ChatColor.BLUE + "Chicken");
+			chicken.setItemMeta(meta);
+			return chicken;
+		}
+		if(type == ItemType.PORK)
+		{
+			ItemStack pork = new ItemStack(Material.GRILLED_PORK, amount);
+			ItemMeta meta = pork.getItemMeta();
+			meta.setDisplayName(ChatColor.BLUE + "Pork");
+			pork.setItemMeta(meta);
+			return pork;
 		}
 		return null;
 	}
