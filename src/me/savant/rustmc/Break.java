@@ -118,7 +118,7 @@ public class Break implements Listener
 				}
 			}
 			if(p.getItemInHand() != null && Util.isTool(p.getItemInHand().getType()))
-				p.getItemInHand().setDurability((short) (p.getItemInHand().getDurability() + 5));
+				p.getItemInHand().setDurability((short) (p.getItemInHand().getDurability() + 2));
 			e.setCancelled(true);
 		}
 		
@@ -140,7 +140,7 @@ public class Break implements Listener
 			amount *= getAxeBonus(p.getItemInHand());
 			ItemIndex.giveItem(ItemType.WOOD, amount, p);
 			if(p.getItemInHand() != null && Util.isTool(p.getItemInHand().getType()))
-				p.getItemInHand().setDurability((short) (p.getItemInHand().getDurability() + 5));
+				p.getItemInHand().setDurability((short) (p.getItemInHand().getDurability() + 2));
 			e.setCancelled(true);
 		}
 	}

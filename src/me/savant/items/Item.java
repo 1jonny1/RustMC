@@ -40,7 +40,9 @@ public enum Item
 	CLOTH_PANTS,
 	CLOTH_SHIRT,
 	CLOTH_HAT,
-	FURNACE;
+	FURNACE,
+	METAL_PICK,
+	METAL_AXE;
 	
 	public boolean isDefaultItem()
 	{
@@ -188,6 +190,10 @@ public enum Item
 				return createItem(new ItemStack(Material.LEATHER_HELMET, 1), "Cloth Hat", none);
 			case FURNACE:
 				return createItem(new ItemStack(Material.FURNACE, 1), "Furnace", new String[] { ChatColor.GRAY + "3x3x3", ChatColor.GRAY + "Used to smelt ores" });
+			case METAL_PICK:
+				return createItem(new ItemStack(Material.IRON_PICKAXE, 1), "Metal Pick");
+			case METAL_AXE:
+				return createItem(new ItemStack(Material.IRON_AXE, 1), "Metal Axe");
 		}
 		return new ItemStack(Material.AIR, 1);
 	}
@@ -355,6 +361,18 @@ public enum Item
 				{
 					new ResourceEntry("Wood", new Resource(ItemType.WOOD), 250),
 					new ResourceEntry("Stone", new Resource(ItemType.STONE), 100)
+				});
+			case METAL_PICK:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Wood", new Resource(ItemType.WOOD), 200),
+					new ResourceEntry("Metal", new Resource(ItemType.METAL), 100)
+				});
+			case METAL_AXE:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Wood", new Resource(ItemType.WOOD), 150),
+					new ResourceEntry("Metal", new Resource(ItemType.METAL), 75)
 				});
 		}
 		return null;
