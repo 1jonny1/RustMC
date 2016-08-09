@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import me.savant.blueprint.BlueprintListener;
+import me.savant.building.StandaloneObject;
 import me.savant.crafting.CraftingListener;
 import me.savant.furnace.Fire;
 import me.savant.furnace.Furnace;
@@ -57,6 +58,7 @@ public class RustMC extends JavaPlugin implements Listener
 		pm.registerEvents(new HempListener(), this);
 		pm.registerEvents(new ItemListener(), this);
 		pm.registerEvents(new Animal(), this);
+		pm.registerEvents(new StandaloneObject(), this);
 		
 		matGen = new MaterialGeneration();
 		

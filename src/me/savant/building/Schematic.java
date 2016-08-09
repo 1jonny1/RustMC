@@ -1,4 +1,4 @@
-package me.savant.rustmc;
+package me.savant.building;
 
 import java.io.File;
 import java.io.FileInputStream;

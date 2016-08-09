@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import me.savant.rustmc.Schematic;
+import me.savant.building.Schematic;
 import me.savant.rustmc.Util;
 
 import org.bukkit.Bukkit;
