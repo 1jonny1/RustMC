@@ -400,24 +400,28 @@ public class MaterialGeneration
 		{
 			for(int z = 0; z < size; z++)
 			{
-				if(chance(0.04f))
+				if(chance(0.05f))
 				{
-					Location loc = new Location(world, x, world.getHighestBlockYAt(x, z), z);
+					Location loc = new Location(world, x, world.getHighestBlockYAt(x, z) + 1, z);
 					if(chance(25))
 					{
 						world.spawnEntity(loc, EntityType.COW);
+						System.out.println("[RustMC] Spawned (COW) at " + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ());
 					}
 					else if(chance(50))
 					{
 						world.spawnEntity(loc, EntityType.PIG);
+						System.out.println("[RustMC] Spawned (PIG) at " + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ());
 					}
 					else if(chance(75))
 					{
 						world.spawnEntity(loc, EntityType.CHICKEN);
+						System.out.println("[RustMC] Spawned (CHICKEN) at " + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ());
 					}
 					else
 					{
 						world.spawnEntity(loc, EntityType.HORSE);
+						System.out.println("[RustMC] Spawned (HORSE) at " + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ());
 					}
 				}
 			}
