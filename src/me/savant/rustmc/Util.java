@@ -54,6 +54,13 @@ public class Util
 		return random.nextInt((max - min) + 1) + min;
 	}
 	
+	public static boolean chance(float chance)
+	{
+		Random random = new Random();
+		float f = random.nextFloat();
+		return f <= (chance / 100);
+	}
+	
 	static boolean canWork = true;
 	public static boolean work()
 	{

@@ -42,7 +42,10 @@ public enum Item
 	CLOTH_HAT,
 	FURNACE,
 	METAL_PICK,
-	METAL_AXE;
+	METAL_AXE,
+	GUNPOWDER,
+	EXPLOSIVE,
+	C4;
 	
 	public boolean isDefaultItem()
 	{
@@ -191,9 +194,15 @@ public enum Item
 			case FURNACE:
 				return createItem(new ItemStack(Material.FURNACE, 1), "Furnace", new String[] { ChatColor.GRAY + "3x3x3", ChatColor.GRAY + "Used to smelt ores" });
 			case METAL_PICK:
-				return createItem(new ItemStack(Material.IRON_PICKAXE, 1), "Metal Pick");
+				return createItem(new ItemStack(Material.IRON_PICKAXE, 1), "Metal Pick", none);
 			case METAL_AXE:
-				return createItem(new ItemStack(Material.IRON_AXE, 1), "Metal Axe");
+				return createItem(new ItemStack(Material.IRON_AXE, 1), "Metal Axe", none);
+			case GUNPOWDER:
+				return createItem(new ItemStack(Material.SULPHUR, 1), "Gun Powder", none);
+			case EXPLOSIVE:
+				return createItem(new ItemStack(Material.REDSTONE_TORCH_ON, 1), "Explosive", none);
+			case C4:
+				return createItem(new ItemStack(Material.TNT, 1), "C4", new String[] { "Click to Launch!" });
 		}
 		return new ItemStack(Material.AIR, 1);
 	}
@@ -373,6 +382,24 @@ public enum Item
 				{
 					new ResourceEntry("Wood", new Resource(ItemType.WOOD), 150),
 					new ResourceEntry("Metal", new Resource(ItemType.METAL), 75)
+				});
+			case GUNPOWDER:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Sulfur", new Resource(ItemType.SULFUR), 5),
+					new ResourceEntry("Charcoal", new Resource(ItemType.CHARCOAL), 20)
+				});
+			case EXPLOSIVE:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Gun Powder", new Resource(Item.GUNPOWDER), 10),
+					new ResourceEntry("Sulfur", new Resource(ItemType.SULFUR), 10)
+				});
+			case C4:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Explosive", new Resource(Item.EXPLOSIVE), 5),
+					new ResourceEntry("Cloth", new Resource(ItemType.CLOTH), 200)
 				});
 		}
 		return null;

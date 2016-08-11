@@ -65,6 +65,8 @@ public class ItemIndex
 			return Material.COOKED_CHICKEN;
 		if(type == ItemType.PORK)
 			return Material.GRILLED_PORK;
+		if(type == ItemType.CHARCOAL)
+			return Material.COAL;
 		return null;
 	}
 	
@@ -96,6 +98,8 @@ public class ItemIndex
 				return ItemType.CHICKEN;
 			case GRILLED_PORK:
 				return ItemType.PORK;
+			case COAL:
+				return ItemType.CHARCOAL;
 			default:
 				return null;
 		}
@@ -166,6 +170,8 @@ public class ItemIndex
 			return ItemType.CHICKEN;
 		if(itemName.equalsIgnoreCase("Pork"))
 			return ItemType.PORK;
+		if(itemName.equalsIgnoreCase("Charcoal"))
+			return ItemType.CHARCOAL;
 		return null;
 	}
 	
@@ -271,6 +277,14 @@ public class ItemIndex
 			meta.setDisplayName(ChatColor.BLUE + "Pork");
 			pork.setItemMeta(meta);
 			return pork;
+		}
+		if(type == ItemType.CHARCOAL)
+		{
+			ItemStack charcoal = new ItemStack(Material.COAL, amount);
+			ItemMeta meta = charcoal.getItemMeta();
+			meta.setDisplayName(ChatColor.BLUE + "Charcoal");
+			charcoal.setItemMeta(meta);
+			return charcoal;
 		}
 		return null;
 	}

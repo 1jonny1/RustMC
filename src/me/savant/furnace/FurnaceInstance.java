@@ -112,6 +112,10 @@ public class FurnaceInstance
 				{
 					fire.start();
 					removeWood(WOOD_AMOUNT);
+					if(Util.chance(50f))
+					{
+						ItemIndex.addItem(ItemType.CHARCOAL, 1, getInventory());
+					}
 				}
 				else
 				{

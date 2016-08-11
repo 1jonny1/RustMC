@@ -2,7 +2,9 @@ package me.savant.items;
 
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -23,6 +25,11 @@ public class ItemListener implements Listener
 					p.playSound(p.getLocation(), Sound.ENTITY_GENERIC_DRINK, 1, 15);
 					ItemIndex.removeItem(Material.WOOL, 1, p.getInventory());
 				}
+			}
+			else if(e.getItem().getType() == Material.TNT)
+			{
+				TNTPrimed tnt = (TNTPrimed) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.PRIMED_TNT);
+				tnt.setVelocity(p.getLocation().getDirection().normalize().multiply(2));
 			}
 		}
 	}
