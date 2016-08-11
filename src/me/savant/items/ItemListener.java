@@ -29,7 +29,7 @@ public class ItemListener implements Listener
 			else if(e.getItem().getType() == Material.TNT)
 			{
 				TNTPrimed tnt = (TNTPrimed) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.PRIMED_TNT);
-				tnt.setVelocity(p.getLocation().getDirection().normalize().multiply(2));
+				tnt.setVelocity(p.getLocation().getDirection().normalize().multiply(1));
 			}
 		}
 	}
