@@ -8,10 +8,11 @@ import me.savant.blueprint.BlueprintListener;
 import me.savant.building.StandaloneObject;
 import me.savant.crafting.CraftingListener;
 import me.savant.furnace.Fire;
-import me.savant.furnace.Furnace;
-import me.savant.furnace.FurnaceInstance;
+import me.savant.furnace.FurnaceListener;
+import me.savant.furnace.FurnaceListener;
 import me.savant.items.HempListener;
 import me.savant.items.Item;
+import me.savant.items.ItemIndex;
 import me.savant.items.ItemListener;
 import me.savant.rustmc.ItemMenu.OptionClickEvent;
 import me.savant.terrain.Animal;
@@ -44,14 +45,13 @@ public class RustMC extends JavaPlugin implements Listener
 	
 	public void onEnable()
 	{
-		FurnaceInstance.plugin = this;
 		Fire.plugin = this;
 		Util.plugin = this;
 		
 		pm = Bukkit.getPluginManager();
 		pm.registerEvents(this, this);
 		pm.registerEvents(new Break(), this);
-		pm.registerEvents(new Furnace(this), this);
+		pm.registerEvents(new FurnaceListener(), this);
 		pm.registerEvents(new CraftingListener(this), this);
 		pm.registerEvents(new BlueprintListener(this), this);
 		pm.registerEvents(new Death(this), this);
@@ -63,7 +63,8 @@ public class RustMC extends JavaPlugin implements Listener
 		matGen = new MaterialGeneration();
 		
 		long hour = 1200L * 60;
-		long time = hour * HOURS_FOR_RESET;
+		long fiftenMinutes = 300L * 60;
+		long time = fiftenMinutes * HOURS_FOR_RESET;
 		
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
 		{
@@ -282,6 +283,30 @@ public class RustMC extends JavaPlugin implements Listener
 			else
 			{
 				p.sendMessage(ChatColor.RED + "Reported to Staff.");
+			}
+		}
+		if(cmd.getName().equalsIgnoreCase("giveitem"))
+		{
+			if(args.length == 3)
+			{
+				//giveitem <player> <item-name> <amount>
+				Player p = Bukkit.getPlayer(args[0]);
+				String itemname = args[1];
+				itemname = itemname.replace("_", " ");
+				int amount = Integer.parseInt(args[2]);
+				if(Item.getValue(itemname) != null)
+				{
+					Item item = Item.getValue(itemname);
+					ItemStack it = item.getItem();
+					it.setAmount(amount);
+					p.getInventory().addItem(it);
+					p.updateInventory();
+				}
+				else
+				{
+					ItemIndex.addItem(ItemIndex.parseItemType(itemname), amount, p.getInventory());
+					p.updateInventory();
+				}
 			}
 		}
 		return false;

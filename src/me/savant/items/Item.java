@@ -43,9 +43,10 @@ public enum Item
 	FURNACE,
 	METAL_PICK,
 	METAL_AXE,
-	GUNPOWDER,
+	GUN_POWDER,
 	EXPLOSIVE,
-	C4;
+	C4,
+	CHARCOAL;
 	
 	public boolean isDefaultItem()
 	{
@@ -64,6 +65,7 @@ public enum Item
 			case CLOTH_SHIRT:
 			case CLOTH_HAT:
 			case FURNACE:
+			case CHARCOAL:
 				return true;
 		}
 		return false;
@@ -197,12 +199,14 @@ public enum Item
 				return createItem(new ItemStack(Material.IRON_PICKAXE, 1), "Metal Pick", none);
 			case METAL_AXE:
 				return createItem(new ItemStack(Material.IRON_AXE, 1), "Metal Axe", none);
-			case GUNPOWDER:
+			case GUN_POWDER:
 				return createItem(new ItemStack(Material.SULPHUR, 1), "Gun Powder", none);
 			case EXPLOSIVE:
 				return createItem(new ItemStack(Material.REDSTONE_TORCH_ON, 1), "Explosive", none);
 			case C4:
 				return createItem(new ItemStack(Material.TNT, 1), "C4", new String[] { "Click to Launch!" });
+			case CHARCOAL:
+				return createItem(new ItemStack(Material.COAL, 1), "Charcoal");
 		}
 		return new ItemStack(Material.AIR, 1);
 	}
@@ -383,16 +387,16 @@ public enum Item
 					new ResourceEntry("Wood", new Resource(ItemType.WOOD), 150),
 					new ResourceEntry("Metal", new Resource(ItemType.METAL), 75)
 				});
-			case GUNPOWDER:
+			case GUN_POWDER:
 				return new ResourceCost(new ResourceEntry[]
 				{
 					new ResourceEntry("Sulfur", new Resource(ItemType.SULFUR), 5),
-					new ResourceEntry("Charcoal", new Resource(ItemType.CHARCOAL), 20)
+					new ResourceEntry("Charcoal", new Resource(Item.CHARCOAL), 20)
 				});
 			case EXPLOSIVE:
 				return new ResourceCost(new ResourceEntry[]
 				{
-					new ResourceEntry("Gun Powder", new Resource(Item.GUNPOWDER), 10),
+					new ResourceEntry("Gun Powder", new Resource(Item.GUN_POWDER), 10),
 					new ResourceEntry("Sulfur", new Resource(ItemType.SULFUR), 10)
 				});
 			case C4:
@@ -400,6 +404,11 @@ public enum Item
 				{
 					new ResourceEntry("Explosive", new Resource(Item.EXPLOSIVE), 5),
 					new ResourceEntry("Cloth", new Resource(ItemType.CLOTH), 200)
+				});
+			case CHARCOAL:
+				return new ResourceCost(new ResourceEntry[]
+				{
+						new ResourceEntry("Wood", new Resource(ItemType.WOOD), 5),
 				});
 		}
 		return null;

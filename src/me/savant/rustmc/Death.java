@@ -65,10 +65,6 @@ public class Death implements Listener
 					p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 15);
 				}
 			}
-			else
-			{
-				p.sendMessage("False!");
-			}
 		}
 	}
 	

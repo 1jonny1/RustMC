@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import me.savant.furnace.FurnaceMenu;
 import me.savant.items.Item;
 import me.savant.items.ItemIndex;
 import me.savant.items.ItemType;

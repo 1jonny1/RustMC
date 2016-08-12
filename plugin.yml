@@ -10,3 +10,4 @@ commands:
   values:
   regen:
   reset:
+  giveitem:

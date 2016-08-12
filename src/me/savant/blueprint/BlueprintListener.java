@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -22,7 +23,7 @@ public class BlueprintListener implements Listener
 		this.plugin = plugin;
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onClick(PlayerInteractEvent e) 
 	{
 		if(e.getClickedBlock() != null && e.getClickedBlock().getType() == Material.BOOKSHELF)
@@ -40,6 +41,7 @@ public class BlueprintListener implements Listener
 			Player p = e.getPlayer();
 			if(ChatColor.stripColor(item.getItemMeta().getLore().get(0)).contains("Blueprint"))
 			{
+				e.setCancelled(true);
 				if(Blueprint.hasBlueprint(p, item.getType()))
 				{
 					p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 1, 15);
