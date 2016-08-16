@@ -17,7 +17,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 public enum Item
 {
 	PAPER,
-	BUILDING_PLAN,
 	WOOD_SWORD,
 	WOOD_PICK,
 	STONE_AXE,
@@ -36,17 +35,22 @@ public enum Item
 	SNIPER_RIFLE,
 	AK47,
 	ASSAULT_AMMO,
-	CLOTH_BOOTS,
-	CLOTH_PANTS,
-	CLOTH_SHIRT,
-	CLOTH_HAT,
-	FURNACE,
-	METAL_PICK,
-	METAL_AXE,
-	GUN_POWDER,
-	EXPLOSIVE,
-	C4,
-	CHARCOAL;
+	CLOTH_BOOTS, //Leather Boots
+	CLOTH_PANTS, //Leather Leggings
+	CLOTH_SHIRT, //Leather Shirt
+	CLOTH_HAT, //Leather hat
+	FURNACE, //Furnace
+	METAL_PICK, //Iron Pick
+	METAL_AXE, //Iron Axe
+	GUN_POWDER, //Gun Powder
+	EXPLOSIVE, //Redstone Torch
+	C4, //TNT
+	CHARCOAL, //Coal
+	LAND_CLAIM, //Beacon
+	T1_BLOCK, //Wood
+	T2_BLOCK, //Cobblestone
+	T3_BLOCK, //Brick
+	T4_BLOCK; //Iron Block
 	
 	public boolean isDefaultItem()
 	{
@@ -66,7 +70,9 @@ public enum Item
 			case CLOTH_HAT:
 			case FURNACE:
 			case CHARCOAL:
-			case BUILDING_PLAN:
+			case LAND_CLAIM:
+			case T1_BLOCK:
+			case T2_BLOCK:
 				return true;
 		}
 		return false;
@@ -161,8 +167,6 @@ public enum Item
 		{
 			case PAPER:
 				return createItem(new ItemStack(Material.PAPER, 1), "Paper", none);
-			case BUILDING_PLAN:
-				return createItem(new ItemStack(Material.ANVIL, 1), ChatColor.AQUA + "" + ChatColor.BOLD + "" + ChatColor.ITALIC + "Building Plan" + ChatColor.RESET + "" + ChatColor.GRAY + " - core", new String[] {ChatColor.GRAY + "Shift + Right Click to Select", ChatColor.GRAY + "Right Click to Place", ChatColor.GRAY + "Overrides default Hotkeys"});
 			case STONE_AXE:
 				return createItem(new ItemStack(Material.STONE_AXE, 1), "Stone Axe", none);
 			case STONE_PICK:
@@ -221,6 +225,16 @@ public enum Item
 				return createItem(new ItemStack(Material.TNT, 1), "C4", new String[] { "Click to Launch!" });
 			case CHARCOAL:
 				return createItem(new ItemStack(Material.COAL, 1), "Charcoal");
+			case LAND_CLAIM:
+				return createItem(new ItemStack(Material.BEACON, 1), "Land Claim");
+			case T1_BLOCK:
+				return createItem(new ItemStack(Material.WOOD, 1), "T1 Block");
+			case T2_BLOCK:
+				return createItem(new ItemStack(Material.COBBLESTONE, 1), "T2 Block");
+			case T3_BLOCK:
+				return createItem(new ItemStack(Material.BRICK, 1), "T3 Block");
+			case T4_BLOCK:
+				return createItem(new ItemStack(Material.IRON_BLOCK, 1), "T4 Block");
 		}
 		return new ItemStack(Material.AIR, 1);
 	}
@@ -254,9 +268,6 @@ public enum Item
 		{
 			case PAPER:
 				return new ResourceCost(new ResourceEntry("Wood", new Resource(ItemType.WOOD), 100));
-			
-			case BUILDING_PLAN:
-				return new ResourceCost(new ResourceEntry("Paper", new Resource(Item.PAPER), 1));
 			case WOOD_PICK:
 				return new ResourceCost(new ResourceEntry[]
 				{
@@ -422,7 +433,33 @@ public enum Item
 			case CHARCOAL:
 				return new ResourceCost(new ResourceEntry[]
 				{
-						new ResourceEntry("Wood", new Resource(ItemType.WOOD), 5),
+					new ResourceEntry("Wood", new Resource(ItemType.WOOD), 5),
+				});
+			case LAND_CLAIM:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Wood", new Resource(ItemType.WOOD), 750),
+				});
+			case T1_BLOCK:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Wood", new Resource(ItemType.WOOD), 32),
+				});
+			case T2_BLOCK:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Stone", new Resource(ItemType.STONE), 32),
+				});
+			case T3_BLOCK:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Metal", new Resource(ItemType.METAL), 15),
+				});
+			case T4_BLOCK:
+				return new ResourceCost(new ResourceEntry[]
+				{
+					new ResourceEntry("Metal", new Resource(ItemType.METAL), 15),
+					new ResourceEntry("High Quality Metal", new Resource(ItemType.HIGH_QUALITY_METAL), 5),
 				});
 		}
 		return null;

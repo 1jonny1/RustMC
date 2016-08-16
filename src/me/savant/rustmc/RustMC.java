@@ -117,15 +117,6 @@ public class RustMC extends JavaPlugin implements Listener
 			p.sendMessage(ChatColor.DARK_RED + "RustMC");
 			e.setCancelled(true);
 		}
-		if(message.equalsIgnoreCase("building"))
-		{
-			p.sendMessage(ChatColor.GRAY + "Giving Building Plan");
-			p.getInventory().addItem(Item.BUILDING_PLAN.getItem());
-			
-			p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 15);
-			
-			e.setCancelled(true);
-		}
 		if(message.equalsIgnoreCase("crafting"))
 		{
 			p.sendMessage(ChatColor.GRAY + "Giving Crafting Item");
