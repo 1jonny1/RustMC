@@ -117,9 +117,6 @@ public class Loot implements Listener
     	int maxAmount = 15;
     	
     	List<ItemType> items = new ArrayList<ItemType>();
-    	items.add(ItemType.SULFUR);
-    	items.add(ItemType.STONE);
-    	items.add(ItemType.METAL_ORE);
     	
     	for(int x = 0; x < amountOfItems; x++)
     	{

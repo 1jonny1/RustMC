@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Random;
 
 import me.savant.blueprint.BlueprintListener;
-import me.savant.building.StandaloneObject;
+import me.savant.building.BuildingInteraction;
+import me.savant.building.Core;
+import me.savant.building.DataManager;
+import me.savant.building.ExplosiveDamage;
+import me.savant.building.Tag;
 import me.savant.crafting.CraftingListener;
 import me.savant.furnace.Fire;
-import me.savant.furnace.FurnaceListener;
 import me.savant.furnace.FurnaceListener;
 import me.savant.items.HempListener;
 import me.savant.items.Item;
@@ -39,6 +42,8 @@ public class RustMC extends JavaPlugin implements Listener
 	private String version = "1.6";
 	private MaterialGeneration matGen;
 	
+	private DataManager dataManager;
+	
 	private final int HOURS_FOR_RESET = 1;
 	
 	PluginManager pm;
@@ -56,13 +61,20 @@ public class RustMC extends JavaPlugin implements Listener
 		pm.registerEvents(new BlueprintListener(this), this);
 		pm.registerEvents(new Death(this), this);
 		pm.registerEvents(new HempListener(), this);
-		pm.registerEvents(new ItemListener(), this);
+		pm.registerEvents(new ItemListener(this), this);
 		pm.registerEvents(new Animal(), this);
-		pm.registerEvents(new StandaloneObject(), this);
+		pm.registerEvents(new ExplosiveDamage(), this);
+		pm.registerEvents(new BuildingInteraction(), this);
 		
 		matGen = new MaterialGeneration();
 		
-		long hour = 1200L * 60;
+		dataManager = new DataManager(Bukkit.getWorld("flat"), this);
+		dataManager.download();
+		
+		Core.dm = dataManager;
+		Tag.dm = dataManager;
+		
+		//long hour = 1200L * 60;
 		long fiftenMinutes = 300L * 60;
 		long time = fiftenMinutes * HOURS_FOR_RESET;
 		
@@ -78,6 +90,11 @@ public class RustMC extends JavaPlugin implements Listener
 			}
 			
 		}, 0L, time);
+	}
+	
+	public void onDisable()
+	{
+		dataManager.save();
 	}
 	
 	public void registerEvents(Listener listener)

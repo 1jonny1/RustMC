@@ -1,5 +1,7 @@
 package me.savant.items;
 
+import me.savant.rustmc.RustMC;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -13,8 +15,15 @@ import org.bukkit.inventory.ItemStack;
 
 public class ItemListener implements Listener
 {
+	
+	RustMC plugin;
+	public ItemListener(RustMC plugin)
+	{
+		this.plugin = plugin;
+	}
+	
 	@EventHandler
-	public void onInteract(PlayerInteractEvent e)
+	public void onInteract(final PlayerInteractEvent e)
 	{
 		if(e.getItem() != null)
 		{

@@ -1,11 +1,7 @@
 package me.savant.terrain;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-import me.savant.building.Schematic;
 import me.savant.rustmc.Util;
 
 import org.bukkit.Bukkit;
@@ -18,7 +14,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 
 public class MaterialGeneration
 {
@@ -192,13 +187,14 @@ public class MaterialGeneration
 	
 	private void buildingGeneration()
 	{
+		/**
 		int buildingAmount = 2;
 		List<Location> previousLocations = new ArrayList<Location>();
 		for(int i = 1; i <= buildingAmount; i++)
 		{
 			try
 			{
-				Schematic bld = Schematic.parseSchematic("building_" + i);
+				CuboidClipboard cc = Schematic.getSchematic("building_" + i);
 				
 				Location loc = randomLocation();
 				int iteration = 0;
@@ -222,8 +218,10 @@ public class MaterialGeneration
 				e.printStackTrace();
 			}
 		}
+		**/
 	}
 	
+	/**
 	private boolean canPlace(Schematic schematic, Location loc, List<Location> previousLocations)
 	{
 		int distanceBetweenBuildings = size / 3;
@@ -243,6 +241,7 @@ public class MaterialGeneration
 			return false;
 		}
 	}
+	**/
 		
 	private Location randomLocation()
 	{

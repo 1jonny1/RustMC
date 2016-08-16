@@ -66,6 +66,7 @@ public enum Item
 			case CLOTH_HAT:
 			case FURNACE:
 			case CHARCOAL:
+			case BUILDING_PLAN:
 				return true;
 		}
 		return false;
@@ -115,6 +116,19 @@ public enum Item
 		return ls.toArray(new Item[ls.size()]);
 	}
 	
+	public static Item[] getDefaultItems()
+	{
+		List<Item> ls = new ArrayList<Item>();
+		for(Item item : values())
+		{
+			if(item.isDefaultItem())
+			{
+				ls.add(item);
+			}
+		}
+		return ls.toArray(new Item[ls.size()]);
+	}
+	
 	public void removeItem(Player p, int amount)
 	{
 		int removed = 0;
@@ -148,7 +162,7 @@ public enum Item
 			case PAPER:
 				return createItem(new ItemStack(Material.PAPER, 1), "Paper", none);
 			case BUILDING_PLAN:
-				return createItem(new ItemStack(Material.CHEST, 1), ChatColor.AQUA + "" + ChatColor.BOLD + "" + ChatColor.ITALIC + "Building Plan" + ChatColor.RESET + "" + ChatColor.GRAY + " - core", new String[] {ChatColor.GRAY + "Shift + Right Click to Select", ChatColor.GRAY + "Right Click to Place", ChatColor.GRAY + "Overrides default Hotkeys"});
+				return createItem(new ItemStack(Material.ANVIL, 1), ChatColor.AQUA + "" + ChatColor.BOLD + "" + ChatColor.ITALIC + "Building Plan" + ChatColor.RESET + "" + ChatColor.GRAY + " - core", new String[] {ChatColor.GRAY + "Shift + Right Click to Select", ChatColor.GRAY + "Right Click to Place", ChatColor.GRAY + "Overrides default Hotkeys"});
 			case STONE_AXE:
 				return createItem(new ItemStack(Material.STONE_AXE, 1), "Stone Axe", none);
 			case STONE_PICK:

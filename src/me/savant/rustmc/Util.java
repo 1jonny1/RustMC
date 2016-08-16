@@ -11,6 +11,9 @@ public class Util
 {
 	public static RustMC plugin;
 	
+	public static final String red = ChatColor.RED + "" + ChatColor.BOLD + "" + ChatColor.ITALIC;
+	public static final String def = ChatColor.RESET + "" + ChatColor.GRAY;
+	
 	public static boolean isTool(Material m)
 	{
 		return

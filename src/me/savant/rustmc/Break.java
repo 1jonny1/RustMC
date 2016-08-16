@@ -2,10 +2,14 @@ package me.savant.rustmc;
 
 import java.util.Random;
 
+import me.savant.building.Core;
+import me.savant.building.Health;
+import me.savant.building.Tag;
 import me.savant.items.ItemIndex;
 import me.savant.items.ItemType;
 import net.md_5.bungee.api.ChatColor;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -17,6 +21,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+
+import com.connorlinfoot.actionbarapi.ActionBarAPI;
 
 
 public class Break implements Listener
@@ -32,6 +38,17 @@ public class Break implements Listener
 	public void onBreak(BlockBreakEvent e)
 	{
 		Material type = e.getBlock().getType();
+		for(Material mat : building_blocks)
+		{
+			if(e.getBlock().getType() == mat && e.getPlayer().getGameMode() != GameMode.CREATIVE)
+			{
+				Tag.delete(e.getBlock());
+				e.setCancelled(false);
+				return;
+			}
+		}
+		
+		
 		if(type != Material.IRON_ORE && type != Material.GOLD_ORE && type != Material.DIAMOND_ORE && type != Material.LOG && type != Material.LEAVES && !e.getPlayer().isOp())
 		{
 			e.setCancelled(true);
@@ -145,11 +162,73 @@ public class Break implements Listener
 		}
 	}
 	
+	public static Material[] building_blocks = new Material[]
+	{
+		Material.BEACON,
+		Material.WOOD,
+		Material.COBBLESTONE,
+		Material.BRICK,
+		Material.IRON_BLOCK
+	};
+	
 	@EventHandler
 	public void onPlace(BlockPlaceEvent e)
 	{
-		if(!e.getPlayer().isOp())
-			e.setCancelled(true);
+		for(Material mat : building_blocks)
+		{
+			if(e.getBlock().getType() == mat)
+			{
+				Location loc = e.getBlock().getLocation();
+				Player p = e.getPlayer();
+				if(Core.hasPlacedCore(p)|| e.getBlock().getType() == Material.BEACON)
+				{
+					if(Core.hasPlacedCore(p) && e.getBlock().getType() == Material.BEACON)
+					{
+						error(p, "You've already claimed the max amount of land (50)");
+					}
+					else
+					{
+						if(Core.isInRange(p, loc))
+						{
+							if(!Core.isInAnyRange(p, loc))
+							{
+								p.playSound(p.getLocation(), Sound.BLOCK_STONE_PLACE, 8, 15);
+								
+								Tag.Tag(e.getBlock(), "owner", p.getName());
+								Tag.Tag(e.getBlock(), "health", Health.getMaxHealth(e.getBlock().getType()) + "");
+								
+								if(e.getBlock().getType() == Material.BEACON)
+									Tag.Tag(e.getBlock(), "core", "true");
+								
+								return;
+							}
+							else
+							{
+								error(p, "You are building blocked by another player here!");
+							}
+						}
+						else
+						{
+							error(p, "You are not in range of your base!");
+						}
+					}
+				}
+				else
+				{
+					error(p, "You have not claimed any land yet!");
+				}
+			}
+		}
+		e.setCancelled(true);
+		
+		if(e.getPlayer().getGameMode() == GameMode.CREATIVE && e.isCancelled())
+			e.setCancelled(false);
+	}
+	
+	private void error(Player p, String message)
+	{
+		ActionBarAPI.sendActionBar(p, ChatColor.DARK_RED + message, 100);
+		p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_HURT, 1, 15);
 	}
 	
 	public void breakTree(Block tree)
